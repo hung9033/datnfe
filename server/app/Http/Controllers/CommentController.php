@@ -38,6 +38,10 @@ class CommentController extends Controller
         $comment = Comment::findOrFail($id);
         $comment_id=$comment->id;
         $product_id =$comment->product_id;
+        $existingReply = Comment::where('parent_id', $comment_id)->first();
+        if($existingReply){
+            return redirect()->back()->with('error','Bạn đã bình luận sản phẩm này rồi');
+        }
         // dd($product_id);
         $comment_traloi=$request->comment;
         if(Auth::id()){
@@ -54,7 +58,7 @@ class CommentController extends Controller
             }else{
                 return redirect()->back()->with('error','thêm bình luận không thành công');
             }
-           
+
         }else{
             return redirect()->back()->with('error','bạn chưa đăng nhập');
         }

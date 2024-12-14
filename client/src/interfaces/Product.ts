@@ -49,11 +49,32 @@ export interface Sizes {
     id: string
     name: string
 }
-export interface Comment {
-    id: string,
-    rating: string,
-    comment: string
+export interface User {
+    id: number;
+    name: string;
 }
+
+export interface Reply {
+    id: number;
+    comment: string;
+    rating: number;
+    created_at: string;
+    user: User;
+}
+
+export interface Comment {
+    id: number;
+    comment: string;
+    rating: number;
+    created_at: string;
+    user: User;
+    replies: Reply[];
+}
+
+export interface CommentsResponse {
+    comments: Comment[];
+}
+
 export interface Discount {
     id: number,
     discount_percent: number,

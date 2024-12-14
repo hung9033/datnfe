@@ -9,7 +9,7 @@ use App\Models\Product;
 use App\Models\ProductDetail;
 use App\Models\ProductView;
 use App\Models\SubCategory;
-use Illuminate\Support\Facades\Auth;
+
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -184,17 +184,10 @@ class ProductController extends Controller
     // Sản phẩm đã xem gần đây
     public function addRecentlyViewed(Request $request)
     {
-        $request->validate([
-            'user_id' => 'required',
-            'product_id' => 'required',
-        ]);
-        $user_id = $request->user_id;
-
-        // Lấy người dùng hiện tại
-        if (!$user_id) {
+        $user = $request->user(); // Lấy người dùng hiện tại
+        if (!$user) {
             return response()->json([
-                'message' => 'Bạn chưa đăng nhập vui lòng đăng nhập',
-                'user_id'=>$user_id,
+                'message' => 'Bạn chưa đăng nhập vui lòng đăng nhập'
             ], 404);
         }
         $productId = $request->input('product_id');
@@ -216,59 +209,46 @@ class ProductController extends Controller
         // }
 
         // Xóa bản ghi cũ nếu sản phẩm này đã có trong danh sách
-        // ProductView::where('user_id', $user_id)
-        //     ->where('product_id', $productId)
-        //     ->delete();
+        ProductView::where('user_id', $user->id)
+            ->where('product_id', $productId)
+            ->delete();
 
         // Tạo bản ghi mới
-      $productView=  ProductView::create([
-            'user_id' => $user_id,
+        ProductView::create([
+            'user_id' => $user->id,
             'product_id' => $productId,
         ]);
 
-        if ($productView){
-            return response()->json(['message' => 'Thêm thành công']);
-        }else{
-            return response()->json(['message' => 'Thêm không thành công']);
-        }
-
         // Giới hạn danh sách sản phẩm đã xem gần đây (ví dụ: chỉ giữ lại 5 sản phẩm gần nhất)
-        // $recentlyViewed = ProductView::where('user_id', $user_id)
-        //     ->orderBy('viewed_at', 'desc')
-        //     ->take(5)
-        //     ->pluck('id');
+        $recentlyViewed = ProductView::where('user_id', $user->id)
+            ->orderBy('viewed_at', 'desc')
+            ->take(5)
+            ->pluck('id');
 
         // Xóa các sản phẩm cũ hơn ngoài giới hạn
-        // ProductView::where('user_id', $user_id)
-        //     ->whereNotIn('id', $recentlyViewed)
-        //     ->delete();
+        ProductView::where('user_id', $user->id)
+            ->whereNotIn('id', $recentlyViewed)
+            ->delete();
 
-
+        return response()->json(['message' => 'Đã thêm vào danh sách đã xem gần đây']);
     }
 
     // Hàm để lấy danh sách sản phẩm đã xem gần đây
     public function getRecentlyViewed(Request $request)
     {
-         $request->validate([
-            'user_id' => 'required'
-        ]);
-        $user_id = $request->user_id;
-        // Lấy người dùng hiện tại
-        // return response()->json([
-        //     'user_id' => $user_id
-        // ],200);
-        if (!$user_id) {
+        $user = $request->user(); // Lấy người dùng hiện tại
+        if (!$user) {
             return response()->json([
                 'message' => 'Bạn chưa đăng nhập vui lòng đăng nhập'
-            ],200);
+            ]);
         }
 
-        // $request->validate([
-        //     'product' => 'required'
-        // ]);
+        $request->validate([
+            'product' => 'required'
+        ]);
         // Lấy danh sách sản phẩm đã xem gần đây của người dùng
-        $products = ProductView::where('user_id', $user_id)
-            ->orderBy('created_at', 'desc')
+        $products = ProductView::where('user_id', $user->id)
+            ->orderBy('viewed_at', 'desc')
             ->take(5) // Lấy 5 sản phẩm gần nhất
             ->with('product') // Eager load chi tiết sản phẩm
             ->get();
@@ -278,76 +258,71 @@ class ProductController extends Controller
 
     public function filterProduct(Request $request)
     {
-        // explode là để tách nó ra ví dụ : color đẩy dữ liệu là 2 màu thì nó tách ra thành mảng
         $query = Product::query()
             ->select('products.*')
             ->distinct()
             ->join('product_details', 'products.id', '=', 'product_details.product_id');
-        // $request->validate([
-        //     'category' => 'required',
-        // ]);
-        // Lọc theo danh mục
+
         if ($request->filled('category')) {
-            $category = Category::where('name', 'like', '%' . $request->category . '%')->first();
+            $category = Category::where('id', $request->category)->first();
             if ($category) {
-                $subcategory_ids = $category->subCategories->pluck('id');
-                $query->whereIn('products.sub_category_id', $subcategory_ids); // Lọc theo sub_category_id của bảng Product
+                $subcategory_ids = $category->subCategories->pluck('id')->toArray();
+                $query->whereIn('products.sub_category_id', $subcategory_ids);
             } else {
                 return response()->json([
                     'message' => 'Danh mục không tồn tại!'
                 ], 400);
             }
         }
+
         if ($request->filled('subcate')) {
-            $subcate = SubCategory::where('id', 'like', '%' . $request->subcate . '%')->first();
+            $subcate = SubCategory::where('id',  $request->subcate)->first();
             if ($subcate) {
-                $subcategory_ids = $subcate->id;
-                $query->where('sub_category_id', 'like', '%' . $subcategory_ids . '%');
+                $query->where('products.sub_category_id', $subcate->id);
             } else {
                 return response()->json([
                     'message' => 'Danh mục con không tồn tại!'
                 ], 400);
             }
         }
+
         if ($request->filled('color_id')) {
             $color_ids = explode(',', $request->color_id);
             $query->whereIn('product_details.color_id', $color_ids);
         }
+
         if ($request->filled('size_id')) {
             $size_ids = explode(',', $request->size_id);
             $query->whereIn('product_details.size_id', $size_ids);
         }
+
         if ($request->filled('min_price') || $request->filled('max_price')) {
             $min_price = $request->min_price ?? 0;
             $max_price = $request->max_price ?? 9999999;
             $query->where(function ($q) use ($min_price, $max_price) {
-                // Nếu có giá sale, lọc theo giá sale
                 $q->where(function ($q2) use ($min_price, $max_price) {
-                    $q2->whereNotNull('products.price_sale')  // Kiểm tra nếu có giá sale
-                        ->whereBetween('products.price_sale', [$min_price, $max_price]); // Lọc theo giá sale
+                    $q2->whereNotNull('products.price_sale')
+                        ->whereBetween('products.price_sale', [$min_price, $max_price]);
                 })
                 ->orWhere(function ($q3) use ($min_price, $max_price) {
-                    // Nếu không có giá sale, lọc theo giá gốc
-                    $q3->whereNull('products.price_sale')  // Kiểm tra nếu không có giá sale
-                        ->whereBetween('products.price', [$min_price, $max_price]); // Lọc theo giá gốc
+                    $q3->whereNull('products.price_sale')
+                        ->whereBetween('products.price', [$min_price, $max_price]);
                 });
             });
         }
 
-        $products = $query->select('products.*')
-            ->paginate(10);
-            if ($products->isEmpty()) {
-                return response()->json([
-                    'message' => 'Không có sản phẩm chúng tôi sẽ đổ sản các sản phẩm ra để bạn chọn'
-                ], 200);
-            }
+        $products = $query->paginate(10);
 
-            // Trả về kết quả khi có sản phẩm
+        if ($products->isEmpty()) {
             return response()->json([
-                'message' => 'Lọc thành công',
-                'products' => $products
+                'message' => 'Không có sản phẩm phù hợp'
             ], 200);
+        }
 
-
+        return response()->json([
+            'message' => 'Lọc thành công',
+            'products' => $products
+        ], 200);
     }
+
 }

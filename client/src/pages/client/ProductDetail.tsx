@@ -7,7 +7,7 @@ import { useProduct } from "../../hook/Product";
 import { Colors, Product, Sizes } from "../../interfaces/Product";
 import { useColor } from "../../hook/Color";
 import { useCart } from "../../context/Cart";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
@@ -23,34 +23,74 @@ import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import ModalVoucher from "../../components/ModalVoucher/ModalVoucher";
 import { usePromotion } from "../../hook/usePromotion";
 import Slider from "react-slick";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const ProductDetail: React.FC = () => {
+    const { id } = useParams()
 
+
+
+    const [openRepCmt, setopenRepCmt] = useState(false);
+    const [cmt, setCmt] = useState();
+    const openRep = () => {
+        setopenRepCmt(!openRepCmt)
+    }
+    const handleCmt = (value) => {
+        setCmt(value)
+        console.log(cmt);
+    }
+    const handleSend = async (idd: string) => {
+        // if (!comment.trim()) {
+        //     toast.error("Vui lòng nhập đánh giá!");
+        //     return;
+        // }
+        try {
+            const response = await axios.post(`/api/comment/${id}`, {
+                comment: cmt,
+                parent_id: idd,
+                rating: 1,
+
+            });
+            console.log(response.data);
+            if (response.data.message) {
+                toast.success(response.data.message);
+            } else {
+                toast.error(response.data.error);
+            }
+        } catch (error) {
+            console.error("Lỗi khi gửi đánh giá:", error);
+            toast.error("Có lỗi xảy ra, vui lòng thử lại sau.");
+        }
+        // alert(id, cmt)
+    }
 
     const settings = {
-        dots: false,  // Tắt dots
-        infinite: true,  // Cho phép vòng lặp
-        speed: 500,  // Thời gian chuyển tiếp giữa các phần tử
+        dots: false,
+        speed: 500,
         slidesToShow: 1,
         arrows: true,
-
         responsive: [
             {
-                breakpoint: 1024,  // Với màn hình lớn
+                breakpoint: 1024,
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
                 },
             },
             {
-                breakpoint: 600,  // Với màn hình nhỏ hơn
+                breakpoint: 600,
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
                 },
             },
         ],
-    }; const { product, comments, ProductBycategorys, avgComments, StartComments } = useProduct();
+    };
+
+    const { product, comments, ProductBycategorys, avgComments, StartComments } = useProduct();
+    console.log(comments);
+
     const [selectSize, setSelectSize] = useState<Sizes>({ id: '', name: '' });
     const [selectColor, setSelectColor] = useState<Colors>({ id: '', name: '', color_code: '' });
     const [quantity, setQuantity] = useState(1);
@@ -134,6 +174,7 @@ const ProductDetail: React.FC = () => {
         addPromotion(id);
     };
     // console.log(avgComments);
+    console.log(comments);
 
     return (
         <>
@@ -333,9 +374,9 @@ const ProductDetail: React.FC = () => {
                                         {promotions.map((item) => (
                                             <div
                                                 key={item.id}
-                                                className="bg-yellow-100 p-2 rounded-lg mt-2  gap-5 px-5"
+                                                className="bg-yellow-100 p-4 rounded-lg mt-2 gap-5 px-5"
                                             >
-                                                <div className="w-[200px]">
+                                                <div className="w-[400px]">
                                                     <div>Giảm {item.discount}</div>
                                                     <p className="text-[14px] opacity-50">
                                                         Hết hạn sau: {new Date(item.end_date).toLocaleDateString('vi-VN')}
@@ -350,6 +391,7 @@ const ProductDetail: React.FC = () => {
                                             </div>
                                         ))}
                                     </Slider>
+
                                 </div>
                                 <ModalVoucher
 
@@ -374,7 +416,7 @@ const ProductDetail: React.FC = () => {
                                 className={`hovermenuNav hover:text-yellow-500 ${showComment ? "text-yellow-500" : "text-gray-800"
                                     } hover:bg-blue-700}`}
                             >
-                                <button onClick={showOnlyComment}>Đánh giá (<span>{avgComments}</span>)</button>
+                                <button onClick={showOnlyComment}>Đánh giá (<span>{avgComments} <FontAwesomeIcon icon={faStarSolid} /></span>)</button>
                             </h1>
                         </div>
                         {showDescription && (
@@ -387,15 +429,11 @@ const ProductDetail: React.FC = () => {
                                 <div className="flex flex-col items-center justify-center p-5 ">
                                     <div>ĐÁNH GIÁ SẢN PHẨM</div>
                                     <span>
-                                        {avgComments}
+                                        {avgComments}<FontAwesomeIcon icon={faStarSolid} />
                                     </span>
                                     <span className="ml-2 mr-2 flex text-[14px]">
-                                        <FontAwesomeIcon icon={faStarSolid} />
-                                        <FontAwesomeIcon icon={faStarSolid} />
-                                        <FontAwesomeIcon icon={faStarSolid} />
-                                        <FontAwesomeIcon icon={faStarSolid} />
-                                        <FontAwesomeIcon icon={faStarRegular} />
-                                        <span className="text-xs">| {StartComments} đánh giá</span>
+
+                                        <span className="text-xs"> {StartComments} đánh giá</span>
                                     </span>
                                 </div>
                                 <div className="ml-2 lg:mx-20 h-[450px] overflow-y-scroll scrollable-content">
@@ -423,11 +461,47 @@ const ProductDetail: React.FC = () => {
                                                     </div>
                                                 </div>
 
-                                                <div className="ml-8 mb-1">{comment.content}</div>
+                                                <div className="ml-8 mb-1">{comment.comment}</div>
                                                 <div className="ml-8 text-sm opacity-70 mt-1">
                                                     Ngày đăng: {new Date(comment.created_at).toLocaleDateString()}
                                                 </div>
+                                                <div>
+                                                    <span
+                                                        onClick={openRep}
+                                                        className="text-sm ml-8 my-1 cursor-pointer opacity-65 hover:text-yellow-500 ">Trả lời
+                                                    </span>
+                                                    {openRepCmt && (
+                                                        <div>
+                                                            <textarea onChange={(e) => handleCmt(e.target.value)} className="border-2 p-4 ml-10 mt-2 w-96 h-10" placeholder="Nhập câu trả lời của bạn!" />
+                                                            <button onClick={() => handleSend(comment.id)}>Gưi</button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                {comment.replies.map((reply) => (
+                                                    <div>
+                                                        <div className="flex items-center mt-5 ml-5">
+                                                            <div className="mr-2">
+                                                                <User
+                                                                    size={25}
+                                                                    strokeWidth={1.5}
+                                                                    className="rounded-full bg-slate-300 p-1"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <div>{reply.user.name}</div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="ml-14 mb-1">{reply.comment}</div>
+
+                                                        <div className="ml-14 text-sm opacity-70 mt-1">
+                                                            Ngày đăng: {new Date(reply.created_at).toLocaleDateString()}
+                                                        </div>
+                                                    </div>
+                                                ))}
                                             </div>
+
                                         ))
                                     ) : (
                                         <div className="flex items-center justify-center text-gray-800">
@@ -442,7 +516,7 @@ const ProductDetail: React.FC = () => {
 
                             </div>
                         )}
-                    </div>
+                    </div >
                     <hr className="mb-8" />
 
                     <h1 className="mb-5 text-center text-lg">CÓ THỂ BẠN SẼ THÍCH</h1>
@@ -516,7 +590,7 @@ const ProductDetail: React.FC = () => {
                             ))}
                         </div>
                     </div>
-                </div>
+                </div >
             )}
         </>
     );

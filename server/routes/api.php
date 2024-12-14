@@ -1,4 +1,3 @@
-
 <?php
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiOrderController;
@@ -75,7 +74,7 @@ Route::post('login',[ApiAuthController::class,'login']);
 Route::post('register',[ApiAuthController::class,'register']);
 Route::post('logout',[ApiAuthController::class,'logout'])->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')
-    ->prefix('donhangs')
+->prefix('donhangs')
     ->as('donhangs.')
     ->group(function () {
         Route::get('/', [ApiOrderController::class, 'index'])->name('index');
@@ -92,7 +91,8 @@ Route::get('size',[ApiProductController::class,'size']);
 Route::get('Shipping',[ApiProductController::class,'Shipping']);
 Route::get('/discount', [ApiProductController::class, 'discount']);
 Route::post('applyPromotion',[PromotionController::class,'applyPromotion'])->middleware('auth:sanctum');
-
+//sản bình luận như đơn hàng
+Route::get('/ProdductOrder/{id}',[ApiProductController::class,'ProdductOrder']);
 // Form liên hệ
 Route::post('contas', [ApiProductController::class, 'contasUs']);
 
@@ -102,10 +102,10 @@ Route::post('/search', [ProductController::class, 'search']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('wishlist/add', [ApiWishlistController::class, 'addProductToWishlist']);
     Route::delete('wishlist/remove/{productId}', [ApiWishlistController::class, 'removeProductFromWishlist']);
-
 });
 Route::post('wishlist', [ApiWishlistController::class, 'getWishlist']);
 Route::post('/comment/{id}',[CommentController::class,'store'])->middleware('auth:sanctum');
+Route::delete('/comment/{id}',[CommentController::class,'store'])->middleware('auth:sanctum');
 
 Route::put('/userEdit/{id}',[ApiAuthController::class,'update'])->middleware('auth:sanctum');
 
@@ -132,5 +132,3 @@ Route::post('reset_password/{token}',[ApiAuthController::class, 'check_reset_pas
 
 
 // Error: Class "App\Http\Controllers\Api\Auth" not found in file C:\laragon\www\DATN\Backend\app\Http\Controllers\Api\ProductController.php on line 239
-
-

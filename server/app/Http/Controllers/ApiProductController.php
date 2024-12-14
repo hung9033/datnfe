@@ -46,9 +46,11 @@ class ApiProductController extends Controller
         $product->images;
 
         $comments = Comment::where('product_id', $id)
-            ->whereNull('parent_id')
-            ->with('replies.user')
-            ->get();
+        ->whereNull('parent_id')
+        ->with(['user:id,name', 'replies' => function ($query) {
+            $query->with('user:id,name');  // Load thông tin người dùng cho phản hồi
+        }])
+        ->get();
 
             $startComment = Comment::where('product_id', $id)->whereNull('parent_id')->count();
             $totalComment = Comment::where('product_id', $id)->whereNull('parent_id')->get();
@@ -59,37 +61,12 @@ class ApiProductController extends Controller
             }
 
 
-        $commentsArray = $comments->map(function ($comment){
-            return [
-                'id' => $comment->id,
-                'content' => $comment->comment,
-                'rating' => $comment->rating,
-                'created_at' => $comment->created_at,
-                'user' => [
-                    'id' => $comment->user->id,
-                    'name' => $comment->user->name,
-                ],
-
-                'replies' => $comment->replies->map(function ($reply) {
-                    return [
-                        'id' => $reply->id,
-                        'content' => $reply->comment,
-                        'rating' => $reply->rating,
-                        'created_at' => $reply->created_at,
-                        'user' => [
-                            'id' => $reply->user->id,
-                            'name' => $reply->user->name,
-                        ],
-                    ];
-                }),
-            ];
-        });
 
 
         return response()->json([
             'Product' => $product,
             'ProductSubCategory' => $productSubCategory,
-            'comments' => $commentsArray,
+            'comments' => $comments,
             'avgComment' => $avgComment ?? 0,
             'startComment'=>$startComment ?? 0,
         ], 200);

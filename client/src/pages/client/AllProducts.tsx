@@ -31,7 +31,10 @@ const AllProducts = () => {
 
     const { setLoading } = useLoading();
     const [priceRange, setPriceRange] = useState<PriceRange | null>(null);
-    const [category, setCate] = useState<string | null>(null);
+    const [category, setCate] = useState<{
+        id: string;
+        name: string;
+    } | null>(null);
     const [selectedColor, setSelectedColor] = useState<{
         id: string;
         name: string;
@@ -98,9 +101,9 @@ const AllProducts = () => {
         }
     };
 
-    const handleCate = (category: string, isChecked: boolean) => {
+    const handleCate = (category_id: string, category_name: string, isChecked: boolean) => {
         if (isChecked) {
-            setCate(category); // Cập nhật cate khi checkbox được chọn
+            setCate({ id: category_id, name: category_name }); // Cập nhật cate khi checkbox được chọn
         } else {
             setCate(null); // Nếu checkbox bị bỏ chọn, set cate thành null
         }
@@ -317,9 +320,11 @@ const AllProducts = () => {
                                                     type="checkbox"
                                                     className="mr-2"
                                                     onChange={(e) =>
-                                                        handleCate(item.name, e.target.checked)
+                                                        handleCate(item.id,
+                                                            item.name,
+                                                            e.target.checked,)
                                                     }
-                                                    checked={category === item.name}
+                                                    checked={category?.id === item.id}
                                                     name="cate"
                                                 />
                                                 {item.name}
@@ -516,7 +521,7 @@ const AllProducts = () => {
                                     )}
                                     {category && (
                                         <div className="ml-2 inline-flex items-center justify-center rounded-lg bg-slate-100">
-                                            {category}
+                                            {category.name}
                                             <X
                                                 className="ml-1"
                                                 size={17}
