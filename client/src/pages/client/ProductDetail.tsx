@@ -174,7 +174,6 @@ const ProductDetail: React.FC = () => {
         addPromotion(id);
     };
     // console.log(avgComments);
-    console.log(comments);
 
     return (
         <>
@@ -376,18 +375,21 @@ const ProductDetail: React.FC = () => {
                                                 key={item.id}
                                                 className="bg-yellow-100 p-4 rounded-lg mt-2 gap-5 px-5"
                                             >
-                                                <div className="w-[400px]">
-                                                    <div>Giảm {item.discount}</div>
-                                                    <p className="text-[14px] opacity-50">
-                                                        Hết hạn sau: {new Date(item.end_date).toLocaleDateString('vi-VN')}
-                                                    </p>
+                                                <div className="flex justify-around">
+                                                    <div className=" w-[200px] md:w-[400px]">
+                                                        <span className=" mr-2">{item.code}</span>
+                                                        <span className="text-sm">Giảm {item.discount}</span>
+                                                        <p className="text-[14px] opacity-50">
+                                                            Hết hạn sau: {new Date(item.end_date).toLocaleDateString('vi-VN')}
+                                                        </p>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => handleAddPromotion(item.id)}
+                                                        className="bg-red-500 py-1 px-3 rounded-lg text-white text-[13px]"
+                                                    >
+                                                        Nhận
+                                                    </button>
                                                 </div>
-                                                <button
-                                                    onClick={() => handleAddPromotion(item.id)}
-                                                    className="bg-red-500 py-1 px-3 rounded-lg text-white text-[13px]"
-                                                >
-                                                    Nhận
-                                                </button>
                                             </div>
                                         ))}
                                     </Slider>
@@ -471,9 +473,9 @@ const ProductDetail: React.FC = () => {
                                                         className="text-sm ml-8 my-1 cursor-pointer opacity-65 hover:text-yellow-500 ">Trả lời
                                                     </span>
                                                     {openRepCmt && (
-                                                        <div>
-                                                            <textarea onChange={(e) => handleCmt(e.target.value)} className="border-2 p-4 ml-10 mt-2 w-96 h-10" placeholder="Nhập câu trả lời của bạn!" />
-                                                            <button onClick={() => handleSend(comment.id)}>Gưi</button>
+                                                        <div className="flex items-center gap-4">
+                                                            <textarea onChange={(e) => handleCmt(e.target.value)} className="border-2 p-4 ml-10 mt-2 w-96 h-14" placeholder="Nhập câu trả lời của bạn!" />
+                                                            <button className="p-2 bg-yellow-400  px-4 rounded-lg" onClick={() => handleSend(comment.id)}>Gửi</button>
                                                         </div>
                                                     )}
                                                 </div>

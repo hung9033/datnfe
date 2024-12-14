@@ -30,6 +30,7 @@ const ListCategory = () => {
         ],
     };
 
+    console.log(subcates);
 
 
     return (
@@ -38,17 +39,18 @@ const ListCategory = () => {
                 <Slider {...settings}>
                     {subcates.map((sub) => (
                         <div key={sub.id} className='flex lg:gap-4'>
-                            <div className="relative w-28 h-28 md:w-40 md:h-40 lg:w-40 lg:h-40  rounded-full bg-slate-700 bg-[url('https://down-vn.img.susercontent.com/file/f9ce1f63f6b5f142bd98488f46b9c7cd.webp')] bg-cover bg-center">
-                                <div className="absolute inset-0 bg-black opacity-50 rounded-full"></div>
+                            <div
+                                className="relative w-28 h-28 md:w-40 md:h-40 lg:w-40 lg:h-40 rounded-full bg-slate-700 bg-cover bg-center"
+                                style={{ backgroundImage: `url(http://127.0.0.1:8000/storage/${sub.image})` }}
+                            ><div className="absolute inset-0 bg-black opacity-50 rounded-full"></div>
                                 <div className="absolute inset-0 flex items-center justify-center text-white  font-semibold text-sm lg:text-lg">
                                     {sub.name}
                                 </div>
+
                             </div>
                         </div>
                     ))}
                 </Slider>
-
-
             </div>
         </>
     )

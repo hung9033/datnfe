@@ -26,6 +26,8 @@ const steps = ['Thông tin giao hàng', 'Xác nhận đơn hàng ', 'Phương th
 const Checkout = () => {
     const { formatPrice } = useFormatPrice()
     const { promotionsUser } = usePromotion()
+    console.log(promotionsUser);
+
     const [activeStep, setActiveStep] = useState<number>(0)
     const { fetchCartItems } = useCart();
     const { oders, total, handleSubmitOrder, isThankPayment, setThankPayment, modalIcon1 } = useOder(setActiveStep);

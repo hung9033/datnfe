@@ -197,5 +197,17 @@ class ApiProductController extends Controller
         }
 
     }
+    public function ProdductOrder($id){
+        $product = Product::query()->select('name','image','price')->where('id',$id)->first();
+
+    if($product){
+        return response()->json(['product'=>$product],200);
+    }else{
+        return response()->json(['error'=>'khong tim thay san pham'],404);
+    }
+
+
+    }
+
 
 }
