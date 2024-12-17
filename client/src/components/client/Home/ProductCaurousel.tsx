@@ -84,7 +84,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ productsHot = [] }) =
                             <div className="group relative h-[80vw] w-[45vw] md:h-[60vw] md:w-[30vw] lg:h-[25vw] lg:w-[17vw] xl:w-[18vw] p-2" key={product.id}>
                                 <div className="mb-3 h-[80%] w-full overflow-hidden bg-slate-200 transition-transform duration-500 ease-in-out">
                                     <img
-                                        src={product.imageUrl}
+                                        src={`http://127.0.0.1:8000/storage/${product.image}`}
                                         alt={product.image}
                                         className="h-full w-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
                                     />
@@ -155,7 +155,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ productsHot = [] }) =
                         <div className="group relative mb-4 h-[80vw] w-[45vw] md:h-[60vw] md:w-[30vw] lg:h-[30vw] lg:w-[17vw] xl:w-[18vw] p-2 mx-auto">
                             <div className="mb-3 h-[80%] w-full overflow-hidden bg-slate-200 transition-transform duration-500 ease-in-out">
                                 <img
-                                    src={productsHot[0]?.image}
+                                    src={`http://127.0.0.1:8000/storage/${productsHot[0]?.image}`}
                                     alt={productsHot[0]?.name}
                                     className="h-full w-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
                                 />
@@ -194,12 +194,20 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ productsHot = [] }) =
                                     {productsHot[0]?.name}
                                 </div>
                                 <div className="text-center block">
-                                    <span className="mr-1 text-xs md:text-sm lg:text-base xl:text-base text-gray-500 line-through hover:text-yellow-500">
-                                        399.000đ
-                                    </span>
-                                    <span className="text-sm md:text-base lg:text-lg xl:text-xl hover:text-yellow-500">
-                                        {productsHot[0]?.price}.000đ
-                                    </span>
+                                    {productsHot[0]?.price_sale !== null ? (
+                                        <>
+                                            <span className="mr-1 text-xs md:text-sm lg:text-base xl:text-base text-gray-500 line-through hover:text-yellow-500">
+                                                {formatPrice(productsHot[0]?.price)}
+                                            </span>
+                                            <span className="text-sm md:text-base lg:text-lg xl:text-xl text-red-500 hover:text-yellow-500">
+                                                {formatPrice(productsHot[0]?.price_sale)}
+                                            </span>
+                                        </>
+                                    ) : (
+                                        <span className="text-sm md:text-base lg:text-lg xl:text-xl hover:text-yellow-500">
+                                            {formatPrice(productsHot[0]?.price)}
+                                        </span>
+                                    )}
                                 </div>
                             </a>
                         </div>

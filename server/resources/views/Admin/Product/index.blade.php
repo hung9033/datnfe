@@ -35,7 +35,7 @@
                                     <th scope="col">Is_active</th>
                                     <th scope="col">Sub_category_id </th>
                                     <th scope="col">Hành động</th>
-    
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -44,12 +44,12 @@
                                 ?>
                                 @foreach ($Product as $index => $item)
                                     <tr>
-    
+
                                         <th><?php echo $stt ++; ?></th>
                                         <th scope="row">{{ $item->product_code }}</th>
-                                        <td><img src="{{ Storage::url($item->image) }}" alt="" width="150px"></td>
+                                        <td><img src="{{ Storage::url($item->image) }}" alt="" width="100px" height="120px" ></td>
                                         <td>{{ $item->name }}</td>
-    
+
                                         <td>{{ number_format($item->price) }}</td>
                                         <td>{{ number_format($item->price_sale) }}</td>
                                         <td>{{ $item->description }}</td>
@@ -62,7 +62,7 @@
                                                 'is_active' => 'Active',
                                             ];
                                         @endphp
-    
+
                                         @foreach ($statusFields as $field => $label)
                                             <td>
                                                 {!! $item->$field
@@ -86,13 +86,13 @@
                                         </td>
                                     </tr>
                                 @endforeach
-    
+
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 @endsection
