@@ -7,7 +7,7 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-2">Tất cả banner</h5>
+                    <h5 class="card-title mb-2">Danh sách banner</h5>
                     <a  href="{{ route('admins.banner.create') }}" class="btn btn-success ml-auto">Thêm mới banner</a>
                 </div>
                 @if (session('success'))
@@ -24,7 +24,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Hình ảnh</th>
                                         <th scope="col">Tiêu đề</th>
-                                        <th scope="col">Hành động</th>
+                                        <th scope="col">Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -34,17 +34,16 @@
                                             <td><img src="{{ Storage::url($item->image) }}" alt="" width="150px">
                                             </td>
                                             <td>{{ $item->title }}</td>
-                                            
                                             <td>
-                                                <a href="{{ route('admins.banner.edit', $item->id) }}"><i
-                                                        class="mdi mdi-pencil text-muted fs-18 rounded-2 border p-1 me-1"></i></a>
-                                                <form action="{{ route('admins.banner.destroy', $item->id) }}" method="post"
-                                                    class="d-inline " onsubmit="return confirm('bạn có muốn xóa không ?')">
+                                                <a href="{{ route('admins.banner.edit', $item->id) }}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                                                <form action="{{ route('admins.banner.destroy', $item->id) }}" method="POST" style="display:inline-block;">
                                                     @csrf
-                                                    @method('delete')
-                                                    <button type="submit" class="border-0 bg-white"><i
-                                                            class="mdi mdi-delete text-muted fs-18 rounded-2 border p-1"></i></button>
+                                                    @method('DELETE') <!-- Sử dụng phương thức DELETE -->
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn xóa màu sắc này không?');">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
                                                 </form>
+                                                
                                             </td>
                                         </tr>
                                     @endforeach

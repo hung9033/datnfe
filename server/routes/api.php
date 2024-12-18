@@ -127,7 +127,7 @@ Route::post('check_forgot_password',[ApiAuthController::class, 'check_forgot_pas
 Route::get('reset_password/{token}',[ApiAuthController::class, 'reset_password'])->name('account.reset_password');
 Route::post('reset_password/{token}',[ApiAuthController::class, 'check_reset_password']);
 
-
+Route::post('/code_order', [ApiOrderController::class, 'searchByOrderCode'])->middleware('auth:sanctum');
 
 
 

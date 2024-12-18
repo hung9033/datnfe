@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useFavorites from "../../hook/useFavorites";
 import { Product } from "../../interfaces/Product";
 import {
@@ -8,11 +8,24 @@ import {
     Heart,
     ShoppingCart,
 } from "lucide-react";
+import ModalAddToCart from "../../components/client/Home/ModalAddToCart/ModalAddToCart";
+import { useModalAddCartProvider } from "../../context/MoDalAddToCart";
 
 type Props = {};
 
 const ProductWishlist: React.FC<Props> = () => {
-    const { favorites } = useFavorites();
+    const { isOpenModalAddToCart, setIsOpenModalAddToCart } = useModalAddCartProvider();
+    const [selectedProductId, setSelectedProductId] = useState<{ id: string; idSub: string } | null>(null);
+    const openModal = (id: string, idSub: string) => {
+        setSelectedProductId({ id, idSub });
+        setIsOpenModalAddToCart(true);
+    };
+    const closeModal = () => {
+        setIsOpenModalAddToCart(false);
+
+    };
+
+    const { favorites, removeFromFavorites } = useFavorites();
     const lastProductRef = useRef<HTMLDivElement | null>(null); // Tạo ref cho sản phẩm cuối
     const formatPrice = (price) => {
         return new Intl.NumberFormat('vi-VN', {
@@ -45,13 +58,13 @@ const ProductWishlist: React.FC<Props> = () => {
                                         alt={product.imageUrl}
                                         className="h-full w-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
                                     />
-                                   
-                                        {product.product.discount_id !== null && (
-                                            <div className='absolute top-0 right-0 my-3 mx-3 py-1 px-2 rounded-md bg-red-500 text-white sale-badge'>
-                                                {product.product.discount.discount_percent}%
-                                            </div>
-                                        )}
-                                   
+
+                                    {product.product.discount_id !== null && (
+                                        <div className='absolute top-0 right-0 my-3 mx-3 py-1 px-2 rounded-md bg-red-500 text-white sale-badge'>
+                                            {product.product.discount.discount_percent}%
+                                        </div>
+                                    )}
+
                                 </div>
                                 <div className="relative">
                                     <div className="absolute bottom-[30px] left-0 right-0 z-10 flex justify-center space-x-4 opacity-0 transition-all duration-300 group-hover:opacity-100">
@@ -70,10 +83,12 @@ const ProductWishlist: React.FC<Props> = () => {
                                                 color="currentColor"
                                                 strokeWidth="1.5"
                                                 className="h-4 w-4 sm:h-8 sm:w-8 md:h-7 md:w-7 lg:h-7 lg:w-7 xl:h-6 xl:w-6"
+                                                onClick={() => openModal(product.product.id, product.product.sub_category_id)}
                                             />
                                         </div>
                                         <div className="rounded-full bg-white p-2 hover:bg-black hover:text-white">
                                             <Heart
+                                                onClick={() => removeFromFavorites(product.product.id)}
                                                 color="currentColor"
                                                 strokeWidth="1.5"
                                                 className="h-4 w-4 sm:h-8 sm:w-8 md:h-7 md:w-7 lg:h-7 lg:w-7 xl:h-6 xl:w-6"
@@ -131,6 +146,12 @@ const ProductWishlist: React.FC<Props> = () => {
                         <ChevronRight strokeWidth={0.5} />
                     </button>
                 </div>
+                <ModalAddToCart
+                    isOpenModalAddToCart={isOpenModalAddToCart}
+                    closeModal={closeModal}
+                    productId={selectedProductId}
+
+                />
             </div>
         </>
     );

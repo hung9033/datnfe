@@ -7,7 +7,7 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-2">Tất cả danh mục</h5>
+                    <h5 class="card-title mb-2">Danh sách khuyến mãi</h5>
                     <a  href="{{ route('admins.promotion.create') }}" class="btn btn-success ml-auto">Thêm mới khuyến mãi</a>
                 </div>
                 {{-- {{ dd(session('success')) }} --}}
@@ -59,21 +59,18 @@
                                             <td>{{ $item->start_date }}</td>
                                             <td>{{ $item->end_date }}</td>
                                             <td>{{ $item->usage_limit }}</td>
-                                            <td>{{ $item->status }}</td>
+                                            <td>{{ $item->status }}</td>                        
                                             <td>
-                                                <div class="d-flex ">
-                                                    <form action="{{ route('admins.promotion.destroy', $item) }}" method="post">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn xóa không?')" style="border: none; background: none;">
-                                                            <i class="fas fa-trash-alt text-danger"></i> <!-- Icon xóa -->
-                                                        </button>
-                                                    </form>
-                                                    <a href="{{ route('admins.promotion.edit', $item) }}" class="btn btn-success ms-2" style="border: none; background: none;">
-                                                        <i class="fas fa-edit text-success"></i> <!-- Icon sửa -->
-                                                    </a>
-                                                </div>
-                                            </td>                                
+                                                <a href="{{ route('admins.promotion.edit', $item) }}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                                                <form action="{{ route('admins.promotion.destroy', $item) }}" method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE') <!-- Sử dụng phương thức DELETE -->
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn xóa khuyến mãi này không?');">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                                
+                                            </td>                        
     
                                 </tr>
                                 @endforeach

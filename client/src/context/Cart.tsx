@@ -135,7 +135,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   // Hàm tăng số lượng sản phẩm
   const increaseQuantity = async (id: number) => {
     try {
-      setLoading(true)
+
       const updatedCart = cart.map(item =>
         item.id === id ? { ...item, quantity: item.quantity + 1 } : item
       );
@@ -152,15 +152,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       setMessage(response.data.error)
     } catch (error) {
       toast.error((error as AxiosError)?.message);
-    } finally {
-      setLoading(false)
     }
   };
 
   // Hàm giảm số lượng sản phẩm
   const decreaseQuantity = async (id: number) => {
     try {
-      setLoading(true)
+
       const updatedCart = cart.map(item =>
         item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
       );
@@ -168,8 +166,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       await axios.put(`/api/cart/${id}/update`, { quantity: updatedCart.find(item => item.id === id)?.quantity });
     } catch (error) {
       // console.error("Lỗi khi giảm số lượng sản phẩm:", error);
-    } finally {
-      setLoading(false)
     }
   };
 

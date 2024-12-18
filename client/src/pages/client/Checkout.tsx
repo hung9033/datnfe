@@ -16,21 +16,22 @@ import { useLocation } from 'react-router-dom';
 import { Order } from '../../interfaces/oder';
 import { usePromotion } from '../../hook/usePromotion';
 import { useLoading } from '../../context/Loading';
-import LoadingPage from '../../components/loading/LoadingPage';
+import LoadingPage from '../../components/loading/LoadingPageCheckout';
 import { useCart } from '../../context/Cart';
 import useFormatPrice from '../../hook/useFormatPrice';
 import ThankPayMentOder from '../../components/client/checkout/ThankYouOder';
+import LoadingPageCheckout from '../../components/loading/LoadingPageCheckout';
 
 
 const steps = ['Thông tin giao hàng', 'Xác nhận đơn hàng ', 'Phương thức thanh toán'];
 const Checkout = () => {
     const { formatPrice } = useFormatPrice()
     const { promotionsUser } = usePromotion()
-    console.log(promotionsUser);
-
     const [activeStep, setActiveStep] = useState<number>(0)
     const { fetchCartItems } = useCart();
     const { oders, total, handleSubmitOrder, isThankPayment, setThankPayment, modalIcon1 } = useOder(setActiveStep);
+    console.log(oders);
+
     const [shippingCost, setShippingCost] = useState<number>(0);
     const [paymentMethod, setPaymentMethod] = useState<string>('');
     const totalPayment = (total?.subtotal || 0) + (shippingCost || 0);
@@ -143,7 +144,7 @@ const Checkout = () => {
 
         const urlParams = new URLSearchParams(window.location.search);
         const paymentData = {
-            vnp_Amount: urlParams.get("vnp_Amount") || "",
+            vnp_Amount: parseInt(urlParams.get("vnp_Amount") || "0", 10),
             vnp_BankCode: urlParams.get("vnp_BankCode") || "",
             vnp_BankTranNo: urlParams.get("vnp_BankTranNo") || "",
             vnp_CardType: urlParams.get("vnp_CardType") || "",
@@ -156,7 +157,7 @@ const Checkout = () => {
             vnp_TxnRef: urlParams.get("vnp_TxnRef") || "",
             vnp_SecureHash: urlParams.get("vnp_SecureHash") || "",
         };
-
+        const vnp_Amountt = paymentData.vnp_Amount / 100;
         const txnRef = paymentData.vnp_TxnRef;
         const vnp_ResponseCode = paymentData.vnp_ResponseCode;
 
@@ -177,9 +178,7 @@ const Checkout = () => {
                             'Content-Type': 'application/json',
                         },
                     });
-
                     await delay;
-
                     setMessage(data.message);
 
                     // Chuẩn bị dữ liệu cho API thứ hai
@@ -189,15 +188,14 @@ const Checkout = () => {
                         address: shippingInfo.address,
                         email: shippingInfo.email,
                         note: shippingInfo.note,
-                        commodity_money: paymentData.vnp_Amount,
-                        total_amount: (total?.subtotal || 0),
+                        commodity_money: (total?.subtotal || 0),
+                        total_amount: vnp_Amountt,
                         shipping_id: shippingInfo.shippingMethod,
                         vnp_TxnReff: paymentData.vnp_TxnRef,
                         promotion_id: promotion_id,
                     };
 
                     await axios.post('/api/donhangs/store', orderData);
-
                     toast.success("Thanh toán thành công!");
                     fetchCartItems();
                     localStorage.removeItem('activeStep');
@@ -407,20 +405,7 @@ const Checkout = () => {
         }
 
     };
-    const [loadingPageg, setLoadingg] = useState(true);
 
-    useEffect(() => {
-
-        const timer = setTimeout(() => {
-            setLoadingg(false);
-        }, 4000);
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    if (loadingPageg) {
-        return <LoadingPage />;
-    }
     return (
         <>
 
@@ -451,7 +436,7 @@ const Checkout = () => {
                                             <div key={index} className="w-full mx-auto text-gray-800 font-light mb-6 border-b border-gray-200 pb-6">
                                                 <div className="w-full flex items-center">
                                                     <div className="overflow-hidden rounded-lg w-16 h-16 bg-gray-50 border border-gray-200">
-                                                        <img src={oder.ImageProduct} />
+                                                        <img src={`http://127.0.0.1:8000/storage/${oder.ImageProduct}`} />
                                                     </div>
                                                     <div className="flex-grow pl-3">
                                                         <h6 className="font-semibold uppercase text-gray-600">{oder.NameProduct}</h6>

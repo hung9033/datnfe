@@ -7,7 +7,7 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-2">Tất cả danh mục</h5>
+                    <h5 class="card-title mb-2">Danh sách danh mục cha</h5>
                     <a  href="{{ route('admins.category.create') }}" class="btn btn-success ml-auto">Thêm mới danh mục</a>
                 </div>
                 {{-- {{ dd(session('success')) }} --}}
@@ -24,9 +24,9 @@
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Slug</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col">Tên</th>
+                                    <th scope="col">Đường dẫn</th>
+                                    <th scope="col">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>

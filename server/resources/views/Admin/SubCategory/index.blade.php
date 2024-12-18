@@ -7,8 +7,8 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-2">Tất cả danh mục</h5>
-                    <a  href="{{ route('admins.subcategory.create') }}" class="btn btn-success ml-auto">Thêm mới danh mục</a>
+                    <h5 class="card-title mb-2">Danh sách danh mục con</h5>
+                    <a  href="{{ route('admins.subcategory.create') }}" class="btn btn-success ml-auto">Thêm mới danh mục con</a>
                 </div>
                 @if (session('success'))
                 <div class="alert alert-danger col-3 mt-2 ms-2"  id="success-alert">

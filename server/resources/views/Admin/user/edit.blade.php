@@ -22,7 +22,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Name</label>
+                                        <label for="name" class="form-label">Tên người dùng</label>
                                         <input type="text" id="name" name="name"
                                             class="form-control @error('name') is-invalid @enderror"
                                             value="{{ old('name', $user->name) }}" placeholder="Name">
@@ -69,7 +69,7 @@
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="is_active">Is Active</label>
+                                        <label for="is_active">Trạng thái</label>
                                         {{-- <input type="hidden" name="is_active" value="0"> --}}
                                         <input type="checkbox" class="mt-3" id="is_active" name="is_active"
                                             value="1" {{ $user->is_active ? 'checked' : '' }}>
@@ -78,7 +78,7 @@
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="password" class="form-label">Password</label>
+                                        <label for="password" class="form-label">Mật khẩu</label>
                                         <input type="password" id="password" name="password" value="{{ $user->password }}"
                                             class="form-control @error('password') is-invalid @enderror"
                                             placeholder="Leave blank if unchanged">
@@ -87,7 +87,7 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3">
-                                        <label for="phone" class="form-label">Phone</label>
+                                        <label for="phone" class="form-label">Số điện thoại</label>
                                         <input type="text" id="phone" name="phone"
                                             class="form-control @error('phone') is-invalid @enderror"
                                             value="{{ old('phone', $user->phone) }}" placeholder="Phone">
@@ -96,7 +96,7 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3">
-                                        <label for="address" class="form-label">Address</label>
+                                        <label for="address" class="form-label">Địa chỉ</label>
                                         <input type="text" id="address" name="address"
                                             class="form-control @error('address') is-invalid @enderror"
                                             value="{{ old('address', $user->address) }}" placeholder="Address">

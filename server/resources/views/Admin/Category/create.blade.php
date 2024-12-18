@@ -7,7 +7,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Thêm danh mục mới</h5>
+                    <h5 class="card-title mb-0">Thêm mới danh mục</h5>
                 </div><!-- end card header -->
                 <div class="card-body">
                     <div class="row">
@@ -28,7 +28,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary justify-content-center">Thêm</button>
+                                <button type="submit" class="btn btn-primary justify-content-center">Thêm mới</button>
                             </form>
                         </div>
 

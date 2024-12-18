@@ -7,10 +7,30 @@ type ModalOrderDetailProps = {
     closeOderDetail: () => void;
     OrderIdDetail: string;
 }
+
+interface Infor {
+    username: string;
+    email: string;
+    phone: string;
+    address: string;
+    total_amount: number;
+    commodity_money: number;
+}
+interface ProductOrder {
+    product_detail: ProductOrderDetailProps[];
+}
+
+interface ProductOrderDetailProps {
+    product_id: number;
+    product_name: string;
+    product_price: number;
+    product_quantity: number;
+    product_image: string;
+}
 const ModalOrderDetail = ({ openDetailOrder, closeOderDetail, OrderIdDetail }: ModalOrderDetailProps) => {
     const [animate, setAnimate] = useState(false)
-    const [infor, setInfor] = useState()
-    const [product, setProduct] = useState([]);
+    const [infor, setInfor] = useState<Infor>()
+    const [product, setProduct] = useState<ProductOrder[]>([]);
     const [status, setStatus] = useState("");
     const [statusValue, setStatusValue] = useState("");
     const { formatPrice } = useFormatPrice();
@@ -29,19 +49,16 @@ const ModalOrderDetail = ({ openDetailOrder, closeOderDetail, OrderIdDetail }: M
         try {
             const res = await axios.get(`/api/donhangs/show/${OrderIdDetail}`);
             const orderInfo = res.data.donhang;
-            const statusKey = orderInfo.order_status; // Use order_status as the key
-
+            const statusKey = orderInfo.order_status;
             setInfor(orderInfo);
             setProduct(orderInfo.order_detail);
             setStatus(statusKey);
-            setStatusValue(res.data.trangthaidonhang[statusKey]); // Fetch the readable status
-
-
+            setStatusValue(res.data.trangthaidonhang[statusKey]);
         } catch (error) {
             console.error("Error fetching order details:", error);
         }
     };
-
+    console.log(infor);
     useEffect(() => {
         if (OrderIdDetail) {
             getOrderDetailId();
@@ -74,13 +91,15 @@ const ModalOrderDetail = ({ openDetailOrder, closeOderDetail, OrderIdDetail }: M
                                 {product.map((item) => (
                                     <ul className="space-y-2">
                                         <li className="flex justify-between text-gray-700">
-                                            <span>{item.product_detail.product.name}</span>
-                                            <span>{item.product_detail.product_color.name},{item.product_detail.product_size.name}</span>
+                                            <span className="w-72">{item.product_detail.product.name},</span>
+                                            <span>{item.product_detail.product_color.name},{item.product_detail.product_size.name}   <span>Sl:{item.quantity}</span></span>
                                         </li>
 
                                     </ul>
+
                                 ))}
                             </div>
+
 
 
 
@@ -94,7 +113,7 @@ const ModalOrderDetail = ({ openDetailOrder, closeOderDetail, OrderIdDetail }: M
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-gray-600">Tổng tiền:</span>
-                                        <span className="font-bold text-lg text-gray-800">{formatPrice(infor.total_amount)}</span>
+                                        <span className="font-bold text-lg text-red-500">{formatPrice(infor.total_amount)}</span>
                                     </div>
                                     <div className="flex justify-between mt-2">
                                         <span className="text-gray-600">Trạng thái:</span>

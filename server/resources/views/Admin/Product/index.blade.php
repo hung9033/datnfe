@@ -7,8 +7,8 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-2">Tất cả danh mục</h5>
-                    <a  href="{{ route('admins.product.create') }}" class="btn btn-success ml-auto">Thêm mới danh mục</a>
+                    <h5 class="card-title mb-2">Danh sách sản phẩm</h5>
+                    <a  href="{{ route('admins.product.create') }}" class="btn btn-success ml-auto">Thêm mới sản phẩm</a>
                 </div>
                 @if (session('success'))
                 <div class="alert alert-danger col-3 mt-2 ms-2"  id="success-alert">
@@ -22,20 +22,20 @@
                             <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th scope="col">Product_code </th>
-                                    <th scope="col">Image</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Price</th>
+                                    <th scope="col">Mã sản phẩm </th>
+                                    <th scope="col">Ảnh</th>
+                                    <th scope="col">Tên sản phẩm</th>
+                                    <th scope="col">Giá</th>
                                     <th scope="col">Giá khuyến mãi </th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Content</th>
+                                    <th scope="col">Mô tả ngắn</th>
+                                    <th scope="col">Thông tin chi tiết</th>
                                     <th scope="col">Is_sale</th>
                                     <th scope="col">Is_hot</th>
                                     <th scope="col">Is_show_home</th>
-                                    <th scope="col">Is_active</th>
-                                    <th scope="col">Sub_category_id </th>
-                                    <th scope="col">Hành động</th>
-
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col">Danh mục con </th>
+                                    <th scope="col">Thao tác</th>
+    
                                 </tr>
                             </thead>
                             <tbody>
@@ -44,12 +44,12 @@
                                 ?>
                                 @foreach ($Product as $index => $item)
                                     <tr>
-
+    
                                         <th><?php echo $stt ++; ?></th>
                                         <th scope="row">{{ $item->product_code }}</th>
-                                        <td><img src="{{ Storage::url($item->image) }}" alt="" width="100px" height="120px" ></td>
+                                        <td><img src="{{ Storage::url($item->image) }}" alt="" width="150px"></td>
                                         <td>{{ $item->name }}</td>
-
+    
                                         <td>{{ number_format($item->price) }}</td>
                                         <td>{{ number_format($item->price_sale) }}</td>
                                         <td>{{ $item->description }}</td>
@@ -62,7 +62,7 @@
                                                 'is_active' => 'Active',
                                             ];
                                         @endphp
-
+    
                                         @foreach ($statusFields as $field => $label)
                                             <td>
                                                 {!! $item->$field
@@ -74,25 +74,25 @@
                                             {{ $item->SubCate->name}}
                                         </td>
                                         <td>
-                                            <a href="{{ route('admins.product.edit', $item->id) }}"><i
-                                                    class="mdi mdi-pencil text-muted fs-18 rounded-2 border p-1 me-1"></i></a>
-                                            <form action="{{ route('admins.product.destroy', $item->id) }}" method="post"
-                                                class="d-inline " onsubmit="return confirm('bạn có muốn xóa không ?')">
+                                            <a href="{{ route('admins.product.edit', $item->id) }}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                                            <form action="{{ route('admins.product.destroy', $item->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
-                                                @method('delete')
-                                                <button type="submit" class="border-0 bg-white"><i
-                                                        class="mdi mdi-delete text-muted fs-18 rounded-2 border p-1"></i></button>
+                                                @method('DELETE') <!-- Sử dụng phương thức DELETE -->
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn xóa sản phẩm này không?');">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
                                             </form>
+                                            
                                         </td>
                                     </tr>
                                 @endforeach
-
+    
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-
+            
         </div>
     </div>
 @endsection

@@ -19,51 +19,24 @@ import "slick-carousel/slick/slick-theme.css";
 import "../../css/slickvoucher.css";
 
 // import required modules
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { Navigation, Thumbs } from 'swiper/modules';
 import ModalVoucher from "../../components/ModalVoucher/ModalVoucher";
 import { usePromotion } from "../../hook/usePromotion";
 import Slider from "react-slick";
-import { toast } from "react-toastify";
-import axios from "axios";
+import { useModalAddCartProvider } from "../../context/MoDalAddToCart";
+import ModalAddToCart from "../../components/client/Home/ModalAddToCart/ModalAddToCart";
 
 const ProductDetail: React.FC = () => {
-    const { id } = useParams()
+    const { isOpenModalAddToCart, setIsOpenModalAddToCart } = useModalAddCartProvider();
+    const [selectedProductId, setSelectedProductId] = useState<{ id: string; idSub: string } | null>(null);
+    const openModal = (id: string, idSub: string) => {
+        setSelectedProductId({ id, idSub });
+        setIsOpenModalAddToCart(true);
+    };
+    const closeModal = () => {
+        setIsOpenModalAddToCart(false);
 
-
-
-    const [openRepCmt, setopenRepCmt] = useState(false);
-    const [cmt, setCmt] = useState();
-    const openRep = () => {
-        setopenRepCmt(!openRepCmt)
-    }
-    const handleCmt = (value) => {
-        setCmt(value)
-        console.log(cmt);
-    }
-    const handleSend = async (idd: string) => {
-        // if (!comment.trim()) {
-        //     toast.error("Vui lòng nhập đánh giá!");
-        //     return;
-        // }
-        try {
-            const response = await axios.post(`/api/comment/${id}`, {
-                comment: cmt,
-                parent_id: idd,
-                rating: 1,
-
-            });
-            console.log(response.data);
-            if (response.data.message) {
-                toast.success(response.data.message);
-            } else {
-                toast.error(response.data.error);
-            }
-        } catch (error) {
-            console.error("Lỗi khi gửi đánh giá:", error);
-            toast.error("Có lỗi xảy ra, vui lòng thử lại sau.");
-        }
-        // alert(id, cmt)
-    }
+    };
 
     const settings = {
         dots: false,
@@ -89,7 +62,6 @@ const ProductDetail: React.FC = () => {
     };
 
     const { product, comments, ProductBycategorys, avgComments, StartComments } = useProduct();
-    console.log(comments);
 
     const [selectSize, setSelectSize] = useState<Sizes>({ id: '', name: '' });
     const [selectColor, setSelectColor] = useState<Colors>({ id: '', name: '', color_code: '' });
@@ -161,10 +133,16 @@ const ProductDetail: React.FC = () => {
 
     const handleAddToCart = async (product: Product, color_id: string, size_id: string) => {
         try {
-            await addToCart(product, color_id, size_id, quantity);
+            const price = product.price_sale ?? product.price;
+            await addToCart({
+                ...product,
+                price,
+            }, color_id, size_id, quantity);
+            console.log(`Sản phẩm được thêm với giá: ${price}`);
         } catch (error) {
             console.error(error);
         }
+
 
     };
 
@@ -237,13 +215,7 @@ const ProductDetail: React.FC = () => {
                                 <div className="flex items-center">
                                     <div className="flex items-center mr-3">
 
-                                        <span className=" mr-2 flex text-[12px] xl:text-[14px]">
-                                            <FontAwesomeIcon icon={faStarSolid} />
-                                            <FontAwesomeIcon icon={faStarSolid} />
-                                            <FontAwesomeIcon icon={faStarSolid} />
-                                            <FontAwesomeIcon icon={faStarSolid} />
-                                            <FontAwesomeIcon icon={faStarRegular} />
-                                        </span>
+                                        <span className="mr-2 ">{avgComments} <FontAwesomeIcon className="text-yellow-500" icon={faStarSolid} /></span>
                                         <span className="text-xs">| Đã bán: {product.soldQuantity}</span>
                                     </div>
                                     <div className=" text-[13px] xl:text-sm">
@@ -418,7 +390,7 @@ const ProductDetail: React.FC = () => {
                                 className={`hovermenuNav hover:text-yellow-500 ${showComment ? "text-yellow-500" : "text-gray-800"
                                     } hover:bg-blue-700}`}
                             >
-                                <button onClick={showOnlyComment}>Đánh giá (<span>{avgComments} <FontAwesomeIcon icon={faStarSolid} /></span>)</button>
+                                <button onClick={showOnlyComment}>Đánh giá (<span>{avgComments} <FontAwesomeIcon className="text-yellow-500" icon={faStarSolid} /></span>)</button>
                             </h1>
                         </div>
                         {showDescription && (
@@ -431,7 +403,7 @@ const ProductDetail: React.FC = () => {
                                 <div className="flex flex-col items-center justify-center p-5 ">
                                     <div>ĐÁNH GIÁ SẢN PHẨM</div>
                                     <span>
-                                        {avgComments}<FontAwesomeIcon icon={faStarSolid} />
+                                        {avgComments}<FontAwesomeIcon className="text-yellow-500" icon={faStarSolid} />
                                     </span>
                                     <span className="ml-2 mr-2 flex text-[14px]">
 
@@ -454,7 +426,7 @@ const ProductDetail: React.FC = () => {
                                                         <div>{comment.user.name}</div>
                                                         <span className="flex text-[10px]">
                                                             {Array.from({ length: 5 }, (_, index) => (
-                                                                <FontAwesomeIcon
+                                                                <FontAwesomeIcon className="text-yellow-500"
                                                                     key={index}
                                                                     icon={index < comment.rating ? faStarSolid : faStarRegular}
                                                                 />
@@ -467,18 +439,7 @@ const ProductDetail: React.FC = () => {
                                                 <div className="ml-8 text-sm opacity-70 mt-1">
                                                     Ngày đăng: {new Date(comment.created_at).toLocaleDateString()}
                                                 </div>
-                                                <div>
-                                                    <span
-                                                        onClick={openRep}
-                                                        className="text-sm ml-8 my-1 cursor-pointer opacity-65 hover:text-yellow-500 ">Trả lời
-                                                    </span>
-                                                    {openRepCmt && (
-                                                        <div className="flex items-center gap-4">
-                                                            <textarea onChange={(e) => handleCmt(e.target.value)} className="border-2 p-4 ml-10 mt-2 w-96 h-14" placeholder="Nhập câu trả lời của bạn!" />
-                                                            <button className="p-2 bg-yellow-400  px-4 rounded-lg" onClick={() => handleSend(comment.id)}>Gửi</button>
-                                                        </div>
-                                                    )}
-                                                </div>
+
                                                 {comment.replies.map((reply) => (
                                                     <div>
                                                         <div className="flex items-center mt-5 ml-5">
@@ -554,6 +515,7 @@ const ProductDetail: React.FC = () => {
                                                             color="currentColor"
                                                             strokeWidth="1.5"
                                                             className="w-4 h-4 sm:w-8 sm:h-8 md:w-7 md:h-7 lg:w-7 lg:h-7 xl:w-6 xl:h-6"
+                                                            onClick={() => openModal(product.id, product.sub_category_id)}
                                                         />
                                                     </div>
                                                     <div className="rounded-full bg-white p-2 hover:bg-black hover:text-white">
@@ -592,7 +554,14 @@ const ProductDetail: React.FC = () => {
                             ))}
                         </div>
                     </div>
+                    <ModalAddToCart
+                        isOpenModalAddToCart={isOpenModalAddToCart}
+                        closeModal={closeModal}
+                        productId={selectedProductId}
+
+                    />
                 </div >
+
             )}
         </>
     );

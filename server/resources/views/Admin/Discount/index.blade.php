@@ -7,8 +7,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-2">Tất cả danh mục</h5>
-                    <a  href="{{ route('admins.discounts.create') }}" class="btn btn-success ml-auto">Thêm mới </a>
+                    <h5 class="card-title mb-2">Danh sách mã giảm giá</h5>
+                    <a  href="{{ route('admins.discounts.create') }}" class="btn btn-success ml-auto">Thêm mới mã giảm giá </a>
                 </div>
                 @if (session('success'))
                 <div class="alert alert-danger col-3 mt-2 ms-2"  id="success-alert">
@@ -23,10 +23,10 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Danh mục</th> 
-                                    <th>Discount Percent</th>
-                                    <th>Date Time</th>
-                                    <th>Is Active</th>
-                                    <th>Actions</th>
+                                    <th>Phần trăm giảm giá</th>
+                                    <th>Thời gian</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -6,7 +6,7 @@ Cập nhật mã khuyến mãi
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
-                <h5 class="card-title align-content-center mb-0">Cập nhật mã khuyến mãi</h5>
+                <h5 class="card-title align-content-center mb-0">Cập nhật  khuyến mãi</h5>
             </div><!-- end card header -->
 
             <div class="card-body">

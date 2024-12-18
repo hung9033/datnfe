@@ -18,7 +18,7 @@ export const useFilterProducts = (
     const FilterProductsByPrice = async () => {
         // Nếu không có bất kỳ điều kiện nào, không gọi API
         if (!min_price && !max_price && !color_id && !size_id && !subcate && !category) {
-            setFilterProductsPrice([]); 
+            setFilterProductsPrice([]);
             return;
         }
         try {
@@ -31,8 +31,8 @@ export const useFilterProducts = (
                 category,
             });
 
-            const products = response.data.products?.data || []; 
-            const responseMessage = response.data.message || null; 
+            const products = response.data.products?.data || [];
+            const responseMessage = response.data.message || null;
 
             // Nếu không có sản phẩm trả về
             if (!products.length) {
@@ -54,7 +54,7 @@ export const useFilterProducts = (
 
 
     const FilterProductsBySubCate = async () => {
-       
+
         try {
             const response = await axios.post("/api/filterProduct", {
                 color_id,
@@ -63,14 +63,14 @@ export const useFilterProducts = (
 
             });
 
-            const products = response.data.products?.data || []; 
-            const responseMessage = response.data.message || null; 
+            const products = response.data.products?.data || [];
+            const responseMessage = response.data.message || null;
 
             // Nếu không có sản phẩm trả về
             if (!products.length) {
                 toast.error(responseMessage);
             } else {
-                setFilterProductsSubate(products); 
+                setFilterProductsSubate(products);
             }
         } catch (error) {
             console.error("Error fetching filtered products:", error);

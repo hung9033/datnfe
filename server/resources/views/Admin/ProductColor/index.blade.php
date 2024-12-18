@@ -7,7 +7,7 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-2">Tất cả màu sắc</h5>
+                    <h5 class="card-title mb-2">Danh sách màu sắc</h5>
                     <a  href="{{ route('admins.product_colors.create') }}" class="btn btn-success ml-auto">Thêm màu sắc mới</a>
                 </div>
                 @if (session('success'))
@@ -46,7 +46,7 @@
                                             <form action="{{ route('admins.product_colors.destroy', $productcolors->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE') <!-- Sử dụng phương thức DELETE -->
-                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this discount?');">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn xóa màu sắc này không?');">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </form>

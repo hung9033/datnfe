@@ -45,7 +45,7 @@ const LayoutClient: React.FC = () => {
 
   return (
     <>
-      <Loading isShow={loading} />
+      <LoadingPage isShow={loading} />
       <div className="min-h-screen flex flex-col">
         {/* Thông tin hỗ trợ khách hàng */}
         <div className="flex items-center ml-1 lg:mx-[100px] xl:mx-[150px] gap-2 text-[14px] mb-2">

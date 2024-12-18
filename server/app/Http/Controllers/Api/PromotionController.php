@@ -111,21 +111,22 @@ class PromotionController extends Controller
         ->where('promotion_id', $promotion_id)
         ->exists();
         if($UesPromotion1lan){
-            return response()->json(['error' => 'bạn đã nhận mã này rồi']);
+            return response()->json(['error' => 'Bạn đã nhận mã này rồi!']);
         }
         $addPromotion = UserPromotion::create([
             'user_id' => $user_id,
             'promotion_id' => $promotion_id,
+            'so_luong'=>1
         ]);
         if ($addPromotion) {
-            return response()->json(['message' => 'Nhận thành công']);
+            return response()->json(['message' => 'Nhận thành công!']);
         } else {
-            return response()->json(['message' => 'Nhận không thành công']);
+            return response()->json(['message' => 'Nhận không thành công!']);
         }
     }
     public function getPromotion()
     {
-        
+
     $user_id = Auth::id();
     if (!$user_id) {
         return response()->json(['message' => 'Bạn chưa đăng nhập']);

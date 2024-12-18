@@ -27,7 +27,7 @@ const useFavorites = () => {
     }, [checkUser]);
     const fetchFavorites = async () => {
         if (userId === null) {
-           
+
             return;
         }
 
@@ -39,7 +39,7 @@ const useFavorites = () => {
         }
     };
 
-    
+
     useEffect(() => {
         if (userId !== null) {
             fetchFavorites();
@@ -74,7 +74,7 @@ const useFavorites = () => {
     // Xóa sản phẩm khỏi danh sách yêu thích
     const removeFromFavorites = async (productId: string) => {
         try {
-            await axios.delete(`/api/wishlist/${productId}`);
+            await axios.delete(`/api/wishlist/remove/${productId}`);
             // Cập nhật danh sách yêu thích sau khi xóa
             const updatedFavorites = favorites.filter(product => product.id !== productId);
             setFavorites(updatedFavorites);
@@ -85,6 +85,7 @@ const useFavorites = () => {
     return {
         favorites,
         addToFavorites,
+        removeFromFavorites
     };
 };
 

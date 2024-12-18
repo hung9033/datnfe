@@ -88,7 +88,7 @@ const AllProducts = () => {
         selectedColor?.id,
         selectedSize?.id,
         selectedSubcate?.id,
-        category ?? "",
+        category?.id,
     );
 
     // Hàm xử lý khi người dùng chọn khoảng giá
@@ -101,13 +101,6 @@ const AllProducts = () => {
         }
     };
 
-    const handleCate = (category_id: string, category_name: string, isChecked: boolean) => {
-        if (isChecked) {
-            setCate({ id: category_id, name: category_name }); // Cập nhật cate khi checkbox được chọn
-        } else {
-            setCate(null); // Nếu checkbox bị bỏ chọn, set cate thành null
-        }
-    };
 
     const handleColor = (
         color_id: string,
@@ -132,6 +125,17 @@ const AllProducts = () => {
             setSellectedSize(null);
         }
     };
+    const handleCate = (
+        category_id: string,
+        category_name: string,
+        isChecked: boolean
+    ) => {
+        if (isChecked) {
+            setCate({ id: category_id, name: category_name }); // Cập nhật cate khi checkbox được chọn
+        } else {
+            setCate(null); // Nếu checkbox bị bỏ chọn, set cate thành null
+        }
+    };
     const handleSubCate = (
         subcate_id: string,
         subcate_name: string,
@@ -143,6 +147,8 @@ const AllProducts = () => {
             setSelectedSubcate(null);
         }
     };
+
+
     const handleClearFilter = () => {
         setPriceRange(null);
         fetchProducts();
@@ -333,7 +339,7 @@ const AllProducts = () => {
                                     </div>
                                 </div>
                                 <hr />
-                                <div>
+                                <div >
                                     <div
                                         className="flex cursor-pointer items-center p-4"
                                         onClick={toggleCollapseShirt}
@@ -344,10 +350,10 @@ const AllProducts = () => {
 
                                     {/* Nội dung Collapse */}
                                     <div
-                                        className={`transition-max-height overflow-hidden duration-500 ease-in-out ${isOpenShirt ? "max-h-40" : "max-h-0"
+                                        className={`transition-max-height  overflow-hidden duration-500 ease-in-out ${isOpenShirt ? "max-h-auto" : "max-h-0"
                                             }`}
                                     >
-                                        <div className="p-4">
+                                        <div className="p-4  ">
                                             {subcates.map((item, index) => (
                                                 <label key={index} className="mb-2 block">
                                                     <input
@@ -918,9 +924,11 @@ const AllProducts = () => {
                                                         type="checkbox"
                                                         className="mr-2 sm:h-4 sm:w-4"
                                                         onChange={(e) =>
-                                                            handleCate(item.name, e.target.checked)
+                                                            handleCate(item.id,
+                                                                item.name,
+                                                                e.target.checked,)
                                                         }
-                                                        checked={category === item.name}
+                                                        checked={category?.id === item.id}
                                                         name="cate"
                                                     />
                                                     {item.name}

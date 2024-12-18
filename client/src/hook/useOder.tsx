@@ -24,11 +24,12 @@ export const useOder = () => {
     const [myOrder, setMyOrder] = useState<DataType[]>([]);
     const [isThankPayment, setThankPayment] = useState(false);
     const [modalIcon1, setModalIcon1] = useState("loading");
+    const [search, setSearch] = useState();
     const getAllOder = async () => {
         try {
             setLoading(true);
             const resposive = await axios.get("/api/donhangs/create");
-            console.log(resposive.data.cart);
+            console.log('sd', resposive.data);
             serOders(resposive.data.cart);
         } catch (error) {
             console.log(error);
@@ -122,6 +123,18 @@ export const useOder = () => {
     useEffect(() => {
         getMyOrder();
     }, []);
+
+
+    const searchOrder = async (search) => {
+        try {
+            const response = await axios.post(`/api/code_order/?q=${search}`);
+            setSearch(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
     return {
         oders,
         total,
@@ -134,6 +147,8 @@ export const useOder = () => {
         getMyOrder,
         isThankPayment,
         setThankPayment,
-        modalIcon1
+        modalIcon1,
+        searchOrder,
+        search
     };
 };

@@ -36,7 +36,7 @@ class DashboardController extends Controller
       //  foreach ($checkHuyHang as $checkH){
       //    $totalBoughtProduct = $checkHuyHang->OrderDetail->sum('quantity');
       //  }
-
+      $tongDonHangHuy = Order::query()->where('order_status','huy_hang')->count('total_amount');
       // dd($totalBoughtProduct);
       $totalProduct = ProductDetail::sum('quantity');
       // dd($totalBoughtProduct);
@@ -146,6 +146,6 @@ class DashboardController extends Controller
       $totalSales = array_column($percentages, 'total'); // Lấy ra mảng tổng sản phẩm
       $sanphamhethan = ProductDetail::query()->where('quantity', '<', '30')->orderBy('quantity', 'asc')->limit('5')->get();
       // dd($percen);
-      return view('dashboard', compact('totalmoney', 'totalBoughtProduct', 'totalProduct', 'top10Category', 'top5LastestComment', 'top10productbought', 'top5Users', 'monthlySales', 'percentages', 'totalSales', 'sanphamhethan'));
+      return view('dashboard', compact('totalmoney', 'totalBoughtProduct','tongDonHangHuy', 'totalProduct', 'top10Category', 'top5LastestComment', 'top10productbought', 'top5Users', 'monthlySales', 'percentages', 'totalSales', 'sanphamhethan'));
    }
 }

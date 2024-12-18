@@ -37,7 +37,7 @@ const ThankPayMent: React.FC<ConfirmModalProps> = ({ isVisible, modalIcon, onCan
         <div className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
             <div className="flex flex-col items-center justify-center h-[600px] w-[900px] bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="bg-white p-6 w-2/3 sm:w-1/2 lg:w-2/3 text-center">
-                    <X onClick={onCancel} className='absolute top-20 right-[350px]' />
+                    {/* <X onClick={onCancel} className='absolute top-20 right-[350px]' /> */}
                     <div className="bg-green-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
                         {getIcon()}
                     </div>
@@ -60,7 +60,7 @@ const ThankPayMent: React.FC<ConfirmModalProps> = ({ isVisible, modalIcon, onCan
                                     Quay về trang chủ
                                 </Link>
                                 <Link to="/profile/order" className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-400 transition duration-200">
-                                    Xem sản phẩm khác
+                                    Đơn hàng của bạn
                                 </Link>
                             </>
                         ) : (
@@ -69,7 +69,7 @@ const ThankPayMent: React.FC<ConfirmModalProps> = ({ isVisible, modalIcon, onCan
                                     Quay về trang chủ
                                 </Link>
                                 <Link to="/profile/order" className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-400 transition duration-200">
-                                    Xem sản phẩm khác
+                                    Đơn hàng của bạn
                                 </Link>
                             </>
                         )}

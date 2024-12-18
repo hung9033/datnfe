@@ -1,4 +1,4 @@
-import { Eye, Heart, LockKeyhole, PenLine, ShoppingBag } from "lucide-react";
+import { Eye, Heart, LockKeyhole, PenLine, ShoppingBag, Ticket } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
@@ -25,10 +25,10 @@ const Profile = () => {
                     </div>
 
                     {/* Main Content */}
-                    <div className="grid grid-cols-1 gap-4 md:gap-0 md:grid-cols-4 lg:grid-cols-5 mt-3">
+                    <div className="grid grid-cols-1 gap-4 md:gap-0 lg:gap-4 md:grid-cols-4 lg:grid-cols-5 mt-3">
                         {/* Sidebar */}
-                        <aside className="col-span-1 h-72 bg-white border  rounded-lg p-4">
-                            <div className="flex flex-col items-center md:items-start gap-4 mb-6">
+                        <aside className="col-span-1 h-80 bg-white border  rounded-lg p-4">
+                            <div className="flex flex-col   md:items-start lg:items-center gap-4 mb-6">
                                 <img
                                     className="w-16 h-16 rounded-full object-cover"
                                     src="https://inkythuatso.com/uploads/thumbnails/800/2023/03/9-anh-dai-dien-trang-inkythuatso-03-15-27-03.jpg"
@@ -37,7 +37,7 @@ const Profile = () => {
                                 <div className="text-center md:text-left">
                                     <p className="text-base font-semibold">{name}</p>
                                     <Link
-                                        to="/account"
+                                        to="/profile"
                                         className="flex items-center text-sm text-gray-500 hover:text-blue-500 mt-2 gap-1"
                                     >
                                         <PenLine size={15} />
@@ -49,7 +49,7 @@ const Profile = () => {
                             <ul className="space-y-4 text-sm">
                                 <li className="flex items-center gap-3">
                                     <Heart color="#0046d1" size={20} strokeWidth={1.5} />
-                                    <Link to="/profile/favorites" className="hover:text-yellow-500">
+                                    <Link to="/wishlist" className="hover:text-yellow-500">
                                         Sản phẩm yêu thích
                                     </Link>
                                 </li>
@@ -63,6 +63,12 @@ const Profile = () => {
                                     <ShoppingBag color="#0046d1" size={20} strokeWidth={1.5} />
                                     <Link to="/profile/order" className="hover:text-yellow-500">
                                         Đơn hàng
+                                    </Link>
+                                </li>
+                                <li className="flex items-center gap-3">
+                                    <Ticket color="#0046d1" size={20} strokeWidth={1.5} />
+                                    <Link to="/profile/promotion" className="hover:text-yellow-500">
+                                        Mã khuyến mại
                                     </Link>
                                 </li>
                             </ul>

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import useFormatPrice from "../../hook/useFormatPrice";
 import ModalOrderDetail from "../../modalConfirm/ModalOrderDetail";
+import { useForm } from "react-hook-form";
 
 interface OrderItem {
     id: string;
@@ -15,18 +16,21 @@ interface OrderItem {
     price: number;
     product_name: string;
     quantity: number;
-    code_order: string
+    code_order: string;
+    total_amount: string;
 }
 
 const Order: React.FC = () => {
-    const { myOrder, setMyOrder, getMyOrder } = useOder();
+    const { myOrder, setMyOrder, getMyOrder, searchOrder, search } = useOder();
+    console.log(search);
+
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalComment, setModalComment] = useState(false);
     const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [openDetailOrder, setOpenDetailOrder] = useState(false);
     const [OrderIdDetail, setOrderIdDetail] = useState<string | null>(null);
-
+    const [valueSearch, setValueSearch] = useState();
     const openOderDetail = (id) => {
         setOrderIdDetail(id)
         setOpenDetailOrder(true)
@@ -119,12 +123,12 @@ const Order: React.FC = () => {
                     Hủy đơn
                 </button>
             );
-        } else if (status === "Đã nhận hàng") {
-            return (
-                <button className="px-4 py-2 bg-yellow-400 text-black  rounded hover:bg-yellow-300 ">
-                    Mua lại
-                </button>
-            );
+            // } else if (status === "Đã nhận hàng") {
+            //     return (
+            //         <button className="px-4 py-2 bg-yellow-400 text-black  rounded hover:bg-yellow-300 ">
+            //             Mua lại
+            //         </button>
+            //     );
         }
     };
 
@@ -149,76 +153,90 @@ const Order: React.FC = () => {
         return acc;
     }, {});
 
+    const handleSearch = async (value?: string) => {
+        const query = value || valueSearch; // Lấy giá trị từ input hoặc state
+        await searchOrder(query)
+    };
+    console.log(search);
 
     return (
         <div className="col-span-4 ">
+            <h1 className="text-2xl font-bold text-center mb-6">Danh Sách đơn hàng.</h1>
             <div className="overflow-hidden">
-                <div className=" mx-auto lg:px-4 relative md:h-[550px]  h-[750px] overflow-y-scroll">
+                <div className=" mx-auto  relative md:h-[550px]  h-[750px] overflow-y-scroll">
                     {/* Search Bar */}
-                    {/* <div className="mb-4">
+                    <div className="mb-4">
                         <input
+                            onChange={(e) => setValueSearch(e.target.value)}
+                            value={valueSearch}
                             type="text"
                             placeholder="Bạn có thể tìm kiếm theo ID đơn hàng hoặc Tên Sản phẩm"
-                            className=" text-[15px] w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className=" text-[15px] w-40 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
-                    </div> */}
-                    {Object.keys(groupedOrders).map((id) => (
-                        <div key={id} className="border rounded-md p-4 mb-4 bg-white">
-                            <div className="flex justify-between items-center mb-2">
-                                <div className="space-x-2 text-stone-500">
-                                    <span>Code:</span>
-                                    <span>{groupedOrders[id][0]?.code_order || "Không có mã"}</span>
-                                </div>
-                                <div className="flex space-x-2">
-                                    <span
-                                        className={`rounded text-sm text-white ${getStatusColor(groupedOrders[Number(id)][0].orderStatus)}`}
-                                    >
-                                        {groupedOrders[Number(id)][0].orderStatus}
-                                    </span>
-                                </div>
-                            </div>
-                            <hr className="mb-2" />
-
-                            {/* Render products within each group */}
-                            {groupedOrders[Number(id)].map((item, index) => (
-                                <div key={index} className="flex mb-2">
-                                    <img src={item.imageUrl} alt="Product Image" className="w-20 h-20 object-cover mr-4" />
-                                    <div className="flex-1">
-                                        <p className="text-gray-800">{item.product_name}</p>
-                                        <div className="text-sm text-gray-500">Sl:x{item.quantity}</div>
-                                    </div>
-                                    {groupedOrders[Number(id)][0].orderStatus === "Đã nhận hàng" && (
-                                        <button
-                                            onClick={() => openComment(item.id_product)}
-                                            className="px-4 xl:block py-2 h-10 text-gray-700 rounded border-2 hover:bg-gray-100 sm:px-2 sm:text-xs sm:h-auto md:px-3 md:text-sm"
-                                        >
-                                            Đánh Giá
-                                        </button>
-                                    )}
-                                </div>
-                            ))}
-
-                            <hr className="my-2" />
-                            <div>
-                                <div className="flex justify-end">
-                                    <p className="mr-2">Thành tiền:</p>
-                                    <p className="text-xl text-red-600">
-                                        {formatPrice(groupedOrders[Number(id)].reduce((total, item) => total + item.price, 0))}
-                                    </p>
-                                </div>
-                                <div className="flex space-x-2 mt-2 justify-end text-[15px]">
-                                    {/* Render single "Chi tiết" button for the entire group */}
-                                    <button
-                                        onClick={() => openOderDetail(Number(id))}
-                                        className="px-4 py-2 text-gray-700 rounded border-2 hover:bg-gray-100"
-                                    >
-                                        Chi tiết
-                                    </button>
-                                    {getStatusButton(groupedOrders[Number(id)][0].orderStatus, id)}
-                                </div>
-                            </div>
+                        <button onClick={() => handleSearch()} >Gửi</button>
+                    </div>
+                    {myOrder.length === 0 ? (
+                        <div className="text-center py-10 text-gray-500">
+                            <p>Không có đơn hàng nào</p>
                         </div>
-                    ))}
+                    ) : (
+                        Object.keys(groupedOrders).map((id) => (
+                            <div key={id} className="border rounded-md p-4 mb-4 bg-white">
+                                <div className="flex justify-between items-center mb-2">
+                                    <div className="space-x-2 text-stone-500">
+                                        <span>Code:</span>
+                                        <span>{groupedOrders[id][0]?.code_order || "Không có mã"}</span>
+                                    </div>
+                                    <div className="flex space-x-2">
+                                        <span
+                                            className={`rounded text-sm text-white ${getStatusColor(groupedOrders[Number(id)][0].orderStatus)}`}
+                                        >
+                                            {groupedOrders[Number(id)][0].orderStatus}
+                                        </span>
+                                    </div>
+                                </div>
+                                <hr className="mb-2" />
+
+                                {/* Render products within each group */}
+                                {groupedOrders[Number(id)].map((item, index) => (
+                                    <div key={index} className="flex mb-2">
+                                        <img src={item.imageUrl} alt="Product Image" className="w-20 h-20 object-cover mr-4" />
+                                        <div className="flex-1">
+                                            <p className="text-gray-800">{item.product_name}</p>
+                                            <div className="text-sm text-gray-500">Sl:x{item.quantity}</div>
+                                        </div>
+                                        {groupedOrders[Number(id)][0].orderStatus === "Đã nhận hàng" && (
+                                            <button
+                                                onClick={() => openComment(item.id_product)}
+                                                className="px-4 xl:block py-2 h-10 text-gray-700 rounded border-2 hover:bg-gray-100 sm:px-2 sm:text-xs sm:h-auto md:px-3 md:text-sm"
+                                            >
+                                                Đánh Giá
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+
+                                <hr className="my-2" />
+                                <div>
+                                    <div className="flex justify-end">
+                                        <p className="mr-2">Thành tiền:</p>
+                                        <p className="text-xl text-red-600">
+                                            {formatPrice(groupedOrders[Number(id)].reduce((total, item) => item.total_amount, 0))}
+                                        </p>
+                                    </div>
+                                    <div className="flex space-x-2 mt-2 justify-end text-[15px]">
+                                        {/* Render single "Chi tiết" button for the entire group */}
+                                        <button
+                                            onClick={() => openOderDetail(Number(id))}
+                                            className="px-4 py-2 text-gray-700 rounded border-2 hover:bg-gray-100"
+                                        >
+                                            Chi tiết
+                                        </button>
+                                        {getStatusButton(groupedOrders[Number(id)][0].orderStatus, id)}
+                                    </div>
+                                </div>
+                            </div>
+                        )))}
 
                     {/* Phân trang */}
                     {/* <div className="absolute bottom-0 flex w-full justify-center p-4 shadow-lg">

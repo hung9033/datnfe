@@ -11,7 +11,7 @@
             <div class="card">
 
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Thêm màu sắc mới</h5>
+                    <h5 class="card-title mb-0">Thêm mới màu sắc </h5>
                 </div><!-- end card header -->
 
                 <div class="card-body">

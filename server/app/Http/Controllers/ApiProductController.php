@@ -37,8 +37,8 @@ class ApiProductController extends Controller
         })->sum();
         $product['soldQuantity'] = $soldQuantity;
         $product->imageUrl = 'http://127.0.0.1:8000/storage/' . $product->image;
-        $subCategory = SubCategory::findOrFail($sub_category_id);
-        $productSubCategory = $subCategory->product()->with('discount')->get();
+        $subCategory = SubCategory::query()->where('id', $sub_category_id)->first();
+        $productSubCategory = $subCategory ? $subCategory->product()->with('discount')->get() : [];
         foreach ($productSubCategory as $key => $productSubCategorys) {
             $productSubCategorys->imageUrl = 'http://127.0.0.1:8000/storage/' . $productSubCategorys->image;
         }

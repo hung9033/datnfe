@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/showLogin', [AuthController::class, 'showLogin'])->name('showLogin');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/admin/orders/details/{id}', [OrderController::class, 'getOrderDetails'])->name('admins.orders.details');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth:sanctum', 'auth.admin'])->group(function () {
     Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');

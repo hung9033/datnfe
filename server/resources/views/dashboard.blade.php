@@ -25,7 +25,7 @@
                                     <div class="d-flex align-items-end justify-content-between mt-4">
                                         <div>
                                             <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                    data-target="{{ $totalmoney }}"></span>k
+                                                    data-target="{{ $totalmoney }}"></span>
                                             </h4>
                                         </div>
                                         <div class="avatar-sm flex-shrink-0">
@@ -94,26 +94,21 @@
 
                         <div class="col-xl-3 col-md-10">
                             <!-- card -->
-                            {{-- <div class="card card-animate">
+                            <div class="card card-animate">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1 overflow-hidden">
                                             <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                                My Balance</p>
+                                                Tổng đơn hàng đã hủy</p>
                                         </div>
-                                        <div class="flex-shrink-0">
-                                            <h5 class="text-muted fs-14 mb-0">
-                                                +0.00 %
-                                            </h5>
-                                        </div>
+
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between mt-4">
                                         <div>
-                                            <h4 class="fs-22 fw-semibold ff-secondary mb-4">$<span class="counter-value"
-                                                    data-target="165.89">0</span>k
+                                            <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
+                                                    data-target="{{$tongDonHangHuy}}">0</span>đơn hàng
                                             </h4>
-                                            <a href="" class="text-decoration-underline">Withdraw
-                                                money</a>
+
                                         </div>
                                         <div class="avatar-sm flex-shrink-0">
                                             <span class="avatar-title bg-primary-subtle rounded fs-3">
@@ -121,8 +116,8 @@
                                             </span>
                                         </div>
                                     </div>
-                                </div><!-- end card body -->
-                            </div> --}}
+                                </div>
+                            </div>
                             <!-- end card -->
                         </div><!-- end col -->
                     </div> <!-- end row-->

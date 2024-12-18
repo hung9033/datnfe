@@ -13,7 +13,7 @@ use App\Models\Product;
 use App\Models\ProductDetail;
 use App\Models\Promotion;
 use App\Models\SubCategory;
-
+use App\Models\UserPromotion;
 use App\Models\vnpay;
 use App\Models\Vnpayy;
 use Illuminate\Http\Request;
@@ -69,6 +69,7 @@ class ApiOrderController extends Controller
                     'id' => $donHang->id,
                     'code_order' => $donHang->code_order,
                     'id_product' => $detail->productDetail->product->id,
+                    'total_amount' => $donHang->total_amount,
                 ];
             });
         })->sortByDesc('id')->values(); // Sort by ID in descending order
@@ -127,7 +128,12 @@ class ApiOrderController extends Controller
             if ($cart) {
                 foreach ($cart->cartDetails as $detail) {
                     $productDetail = ProductDetail::find($detail->product_detail_id);
-
+                    $product = Product::where('id',$productDetail->product_id)->first();
+                    if($product->price_sale){
+                        $price=$product->price_sale;
+                    }else{
+                        $price=$product->price;
+                    }
                     // Chỉ tiếp tục nếu tìm thấy chi tiết sản phẩm
                     if (!$productDetail) {
                         continue;
@@ -142,7 +148,7 @@ class ApiOrderController extends Controller
                     $sizeName = $productDetail->productSize->name ?? 'N/A';
                     $NameProduct = $productDetail->product->name;
                     $ImageProduct = $productDetail->product->image;
-                    $PriceProduct = $productDetail->product->price;
+                    $PriceProduct = $price;
 
                     // Thêm vào mảng đã định nghĩa với đầy đủ thông tin sản phẩm
                     $cartDetailsFormatted[] = [
@@ -244,6 +250,15 @@ class ApiOrderController extends Controller
                     $promotion = Promotion::query()->where('id', $params['promotion_id'])->first();
                     $promotion->usage_limit -= 1;
                     $promotion->save();
+                    $userPromotion = UserPromotion::query()->where('promotion_id', $params['promotion_id'])
+                        ->where('user_id', $params['user_id'])->first();
+                    if ($userPromotion->so_luong < 0) {
+                        return response()->json([
+                            'error' => 'Bạn đã dùng mã khuyến mại rồi!'
+                        ], 404);
+                    }
+                    $userPromotion->so_luong -= 1;
+                    $userPromotion->save();
                 }
                 $order_id = $order->id;
 
@@ -266,7 +281,7 @@ class ApiOrderController extends Controller
                     $total = $item->price * $item->quantity;
                     $detail = ProductDetail::query()->where('id', $item->product_detail_id)->first();
                     if ($item->quantity > $detail->quantity) {
-                        return response()->json(['error' => 'số lượng kho đã hết vui lòng mua sản phẩm khác'], 200);
+                        return response()->json(['error' => 'Số lượng kho đã hết vui lòng mua sản phẩm khác!'], 200);
                     }
                     OrderDetail::create([
                         'order_id' => $order_id,
@@ -382,6 +397,19 @@ class ApiOrderController extends Controller
             ], 500);
         }
     }
+    public function searchByOrderCode(Request $request)
+{
+    $query = $request->input('q', '');
+
+    // Tìm kiếm theo mã đơn hàng (code_order)
+    $orders = Order::where('code_order', 'like', '%' . $query . '%')->get();
+
+    if ($orders->isEmpty()) {
+        return response()->json(['message' => 'Không có đơn hàng nào'], 404);
+    }
+
+    return response()->json($orders);
+}
 
     /**
      * Remove the specified resource from storage.

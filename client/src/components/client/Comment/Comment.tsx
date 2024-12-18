@@ -28,13 +28,13 @@ const Comment: React.FC<ConfirmModalProps> = ({ isVisible, onConfirm, onCancel, 
             const res = await axios.get(`/api/ProdductOrder/${productId}`);
             setProduct(res.data.product)
         } catch (error) {
-
+            console.log(error);
         }
     }
     useEffect(() => {
         getproduct();
     }, [productId])
-    console.log(product);
+
     // Xử lý sự kiện chọn sao
     const handleClick = (index: number) => {
         setRating(rating === index ? 0 : index); // Nếu sao đã chọn, bỏ chọn, nếu chưa chọn thì chọn

@@ -12,6 +12,7 @@ class UserPromotion extends Model
     protected $fillable=[
         'user_id',
         'promotion_id',
+        'so_luong',
     ];
 
     public function promotion(){

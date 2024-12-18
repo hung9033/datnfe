@@ -7,7 +7,7 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-2">Tất cả bình luận</h5>
+                    <h5 class="card-title mb-2">Danh sách bình luận</h5>
                 </div>
                 {{-- {{ dd(session('success')) }} --}}
                 @if (session('success'))
@@ -27,56 +27,32 @@
                                     <th scope="col">Bình luận</th>
                                     <th scope="col">Đánh giá</th>
                                     <th scope="col">Trạng thái</th>
-                                    <th scope="col">Trả lời bình luận</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($comment as $item)
-                              
-                                    <tr>
-                                        <th scope="row">{{ $item->id }}</th>
-                                        <!-- Display user email -->
-                                        <td>{{ $item->user->email }}</td>
-                                        <!-- Display product name -->
-                                        <td>{{ $item->product->name }}</td>
-                                        <td>{{ $item->comment }}</td>
-                                        <td>{{ $item->rating }}</td>
-                                        <!-- Status dropdown -->
-                                        <td>
-                                            <form action="{{ route('admins.comment.update', $item->id) }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <select name="status" class="form-select form-select-sm"
-                                                    onchange="this.form.submit()">
-                                                    <option value="1" {{ $item->status == 1 ? 'selected' : '' }}>Hiển
-                                                        thị</option>
-                                                    <option value="0" {{ $item->status == 0 ? 'selected' : '' }}>Ẩn
-                                                    </option>
-                                                </select>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <p class="d-inline-flex gap-1">
-                                                <a class="btn btn-primary" data-bs-toggle="collapse"
-                                                    href="#collapse{{ $item->id }}" role="button" aria-expanded="false"
-                                                    aria-controls="collapse{{ $item->id }}">
-                                                    trả lời
-                                                </a>
-                                            </p>
-                                            <div class="collapse" id="collapse{{ $item->id }}">
-                                                <div class="card card-body">
-                                                    <form action="{{ route('admins.comment.traloi', $item->id) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        <input type="text" name="comment">
-                                                        <button type="submit" class="btn btn-warning">Gửi</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-
+                              =@foreach ($comment as $item)
+                              <tr>
+                                  <th scope="row">{{ $item->id }}</th>
+                                  <!-- Display user email -->
+                                  <td>{{ $item->user->email }}</td> 
+                                  <!-- Display product name -->
+                                  <td>{{ $item->product->name }}</td>
+                                  <td>{{ $item->comment }}</td>
+                                  <td>{{ $item->rating }}</td>
+                                  <!-- Status dropdown -->
+                                  <td>
+                                      <form action="{{ route('admins.comment.update', $item->id) }}" method="POST">
+                                          @csrf
+                                          @method('PUT')
+                                          <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                              <option value="1" {{ $item->status == 1 ? 'selected' : '' }}>Hiển thị</option>
+                                              <option value="0" {{ $item->status == 0 ? 'selected' : '' }}>Ẩn</option>
+                                          </select>
+                                      </form>
+                                  </td>
+                              </tr>
+                          @endforeach
+                          
 
                             </tbody>
                         </table>

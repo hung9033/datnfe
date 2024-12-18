@@ -7,7 +7,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Chỉnh sửa sản phẩm</h5>
+                    <h5 class="card-title mb-0">Cập nhật sản phẩm</h5>
                 </div><!-- end card header -->
                 <div class="card-body">
                     <form action="{{ route('admins.product.update', $product->id) }}" method="POST"
@@ -20,9 +20,9 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     @error('products')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                    <label for="product_name" class="form-label">Name</label>
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                                    <label for="product_name" class="form-label">Tên sản phẩm</label>
                                     <input type="text" id="product_name"
                                         class="form-control @error('name') is-invalid @enderror" name="name"
                                         value="{{ $product->name }}">
@@ -32,7 +32,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="price" class="form-label">Price</label>
+                                    <label for="price" class="form-label">Giá</label>
                                     <input type="number" id="price"
                                         class="form-control @error('price') is-invalid @enderror" name="price"
                                         value="{{ $product->price }}">
@@ -42,7 +42,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="price_sale" class="form-label">Price_sale</label>
+                                    <label for="price_sale" class="form-label">Giá sale</label>
                                     <input type="number" id="price_sale"
                                         class="form-control @error('price_sale') is-invalid @enderror" name="price_sale"
                                         value="{{ $product->price_sale }}">
@@ -51,17 +51,17 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="simpleinput" class="form-label">Image</label>
+                                    <label for="simpleinput" class="form-label">Ảnh</label>
                                     <input type="file" id="simpleinput"
                                         class="form-control  @error('image') is-invalid @enderror" name="image"
                                         value="{{ $product->image }}" placeholder="image ">
-                                    <img src="{{ Storage::url($product->image) }}" alt="" width="100px">
+                                        <img src="{{Storage::url( $product->image)}}" alt="" width="100px">
                                     @error('image')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="description" class="form-label">description</label>
+                                    <label for="description" class="form-label">Mô tả ngắn</label>
                                     <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description">{{ $product->description }}</textarea>
                                     @error('description')
                                         <p class="text-danger">{{ $message }}</p>
@@ -69,7 +69,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="content" class="form-label">Content</label>
+                                    <label for="content" class="form-label">Thông tin sản phẩm</label>
                                     <textarea id="content" class="form-control @error('content') is-invalid @enderror" name="content">{{ $product->content }}</textarea>
                                     @error('content')
                                         <p class="text-danger">{{ $message }}</p>
@@ -78,40 +78,23 @@
                                         // Kích hoạt CKEditor
                                         CKEDITOR.replace('content', {
                                             language: 'vi', // Ngôn ngữ Tiếng Việt
-                                            toolbar: [{
-                                                    name: 'basicstyles',
-                                                    items: ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat']
-                                                },
-                                                {
-                                                    name: 'paragraph',
-                                                    items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent']
-                                                },
-                                                {
-                                                    name: 'insert',
-                                                    items: ['Image', 'Table', 'HorizontalRule']
-                                                },
-                                                {
-                                                    name: 'styles',
-                                                    items: ['Format', 'Font', 'FontSize']
-                                                },
-                                                {
-                                                    name: 'colors',
-                                                    items: ['TextColor', 'BGColor']
-                                                },
-                                                {
-                                                    name: 'tools',
-                                                    items: ['Maximize']
-                                                },
+                                            toolbar: [
+                                                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat'] },
+                                                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'] },
+                                                { name: 'insert', items: ['Image', 'Table', 'HorizontalRule'] },
+                                                { name: 'styles', items: ['Format', 'Font', 'FontSize'] },
+                                                { name: 'colors', items: ['TextColor', 'BGColor'] },
+                                                { name: 'tools', items: ['Maximize'] },
                                             ],
                                             height: 300, // Chiều cao của editor
                                         });
                                     </script>
-
+                                    
                                 </div>
 
 
                                 <div class="mb-3">
-                                    <label for="sub_category_id" class="form-label">Category</label>
+                                    <label for="sub_category_id" class="form-label">Danh mục</label>
                                     <select class="form-select" id="sub_category_id" name="sub_category_id">
                                         @foreach ($subcategory as $subcategorys)
                                             <option value="{{ $subcategorys->id }}"
@@ -158,11 +141,10 @@
                                                     <td class="d-flex align-items-center">
                                                         <input type="file" class="form-control"
                                                             name="list_hinh_anh[{{ $image->id }}]"
-                                                            onchange="previewImage(this, {{ $image->id }})">
+                                                            onchange="previewImage(this, {{ $image->id }})"> 
                                                         <img src="{{ Storage::url($image->image) }}" alt=""
                                                             width="100px" id="preview_{{ $image->id }}">
-                                                        <input type="hidden" name="list_hinh_anh[{{ $image->id }}]"
-                                                            value="{{ $image->id }}">
+                                                            <input type="hidden" name="list_hinh_anh[{{ $image->id }}]" value="{{$image->id}}">
                                                     </td>
                                                     <td>
                                                         <i class="mdi mdi-delete text-muted fs-18 rounded-2 border remove-image p-1"
@@ -186,7 +168,7 @@
                                                 <tr>
                                                     <td class="d-flex align-items-center">
                                                         <div class="mb-3 mx-3">
-                                                            <label class="form-label">Color</label>
+                                                            <label class="form-label">Màu sắc</label>
                                                             <select class="form-select"
                                                                 name="products[{{ $key }}][color_id]">
                                                                 @foreach ($color as $colors)
@@ -197,7 +179,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="mb-3 mx-3">
-                                                            <label class="form-label">Size</label>
+                                                            <label class="form-label">Kích thước</label>
                                                             <select class="form-select"
                                                                 name="products[{{ $key }}][size_id]">
                                                                 @foreach ($size as $sizes)
@@ -208,7 +190,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="mb-3 mx-3">
-                                                            <label class="form-label">Quantity</label>
+                                                            <label class="form-label">Số lượng </label>
                                                             <input type="number" class="form-control"
                                                                 name="products[{{ $key }}][quantity]"
                                                                 value="{{ $productDetail->quantity }}">
@@ -226,7 +208,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Cập nhật sản phẩm</button>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
                     </form>
                 </div>
             </div>
@@ -263,7 +245,7 @@
                     <td class="d-flex align-items-center">
                         <div class="mb-3 mx-3">
                             <label class="form-label">Màu sắc</label>
-                            <select class="form-select" name="products[${variantRowCount}][color_id]">
+                            <select class="form-select" name="products[new_${variantRowCount}][color_id]">
                                 @foreach ($color as $colors)
                                     <option value="{{ $colors->id }}">{{ $colors->name }}</option>
                                 @endforeach
@@ -271,7 +253,7 @@
                         </div>
                         <div class="mb-3 mx-3">
                             <label class="form-label">Kích thước</label>
-                            <select class="form-select" name="products[${variantRowCount}][size_id]">
+                            <select class="form-select" name="products[new_${variantRowCount}][size_id]">
                                 @foreach ($size as $sizes)
                                     <option value="{{ $sizes->id }}">{{ $sizes->name }}</option>
                                 @endforeach
@@ -279,7 +261,7 @@
                         </div>
                         <div class="mb-3 mx-3">
                             <label class="form-label">Số lượng</label>
-                            <input type="number" class="form-control" name="products[${variantRowCount}][quantity]" value="1">
+                            <input type="number" class="form-control" name="products[new_${variantRowCount}][quantity]" value="1">
                         </div>
                     </td>
                     <td>
@@ -298,29 +280,16 @@
             });
 
 
-            // document.querySelectorAll('.remove-variant').forEach(function(button) {
-            //     button.addEventListener('click', function() {
-            //         var variantId = this.closest('tr').getAttribute('data-variant-id');
-            //         if (variantId) {
-            //             var deletedVariants = document.getElementById('deleted_variants').value;
-            //             deletedVariants += (deletedVariants ? ',' : '') + variantId;
-            //             document.getElementById('deleted_variants').value = deletedVariants;
-            //         }
-            //         this.closest('tr').remove();
-            //     });
-            // });
-
-            document.getElementById('variant-table-body').addEventListener('click', function(event) {
-                if (event.target.classList.contains('remove-variant')) {
-                    const row = event.target.closest('tr');
-                    const variantId = row.getAttribute('data-variant-id');
+            document.querySelectorAll('.remove-variant').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var variantId = this.closest('tr').getAttribute('data-variant-id');
                     if (variantId) {
-                        let deletedVariants = document.getElementById('deleted_variants').value;
+                        var deletedVariants = document.getElementById('deleted_variants').value;
                         deletedVariants += (deletedVariants ? ',' : '') + variantId;
                         document.getElementById('deleted_variants').value = deletedVariants;
                     }
-                    row.remove();
-                }
+                    this.closest('tr').remove();
+                });
             });
 
         });

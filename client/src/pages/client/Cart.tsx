@@ -58,25 +58,11 @@ const Cart = () => {
 
     // console.log(item);
 
-    const handleButtonClick = () => {
-        console.log("Selected ID:", selectedIds);
-
-        // try {
-        //     const res = axios.post('/123' + selectedIds)
-        //     console.log(res);
-        // } catch (error) {
-        //     console.log(error);
-
-        // }
-    };
-    // useEffect(() => {
-    //     handleButtonClick()
-    // }, [])
 
     return (
         <>
 
-            <section className="xl:h-[650px] bg-slate-100 pt-2 ">
+            <section className=" bg-slate-100 pt-2 ">
                 <div className="mx-auto max-w-screen-xl px-4 xl:min-h-[620px]  min-h-[720px]  2xl:px-0">
                     <div className=" px-5 py-1 pt-1 xl:mt-3 bg-white xl:py-5">
                         <div className="">
@@ -398,7 +384,7 @@ const Cart = () => {
                                         </div>
                                         <div className="hidden lg:block">
                                             <div className="flex gap-4 justify-center mt-10 mb-2 ">
-                                                <img src={momo} alt="" className="w-8" />
+
                                                 <img src={vnpay} alt="" className="w-24" />
                                             </div>
                                             <p className="text-[14px] opacity-60 text-center">Đảm bảo thanh toán an toàn và bảo mật</p>

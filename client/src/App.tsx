@@ -27,6 +27,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import ProductView from './pages/client/ProductView';
 import News from './pages/client/News';
+import MyPromotion from './pages/client/MyPromotion';
 function App() {
   return (
     <>
@@ -48,6 +49,7 @@ function App() {
             <Route path="profile" element={<Profile />} >
               <Route path="order" element={<Order />} />
               <Route path="productview" element={<ProductView />} />
+              <Route path="promotion" element={<MyPromotion />} />
               <Route index element={<AccountUpdate />} />
             </Route>
           </Route>

@@ -22,11 +22,15 @@ class AuthController extends Controller
                 return redirect()->back()->with('error', 'tài khoản đã bị khóa');
             }
             //  dd(redirect()->intended(route('dashboard')));
-           
+
             return redirect()->intended(route('dashboard'));
         }
 
         return redirect()->back()->with('Email', 'sai địa chỉ email');
+    }
+    public function logout(){
+        Auth::logout();
+        return redirect('/');
     }
 
 }

@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useColor } from "../../../../hook/Color";
 import { useCart } from "../../../../context/Cart";
 import { useModalAddCartProvider } from "../../../../context/MoDalAddToCart";
+import useFormatPrice from "../../../../hook/useFormatPrice";
 type ModalAddToCartProps = {
     isOpenModalAddToCart: boolean;
     closeModal: () => void;
@@ -19,6 +20,7 @@ const ModalAddToCart = ({
     closeModal,
     productId = { id: "", idSub: "" },
 }: ModalAddToCartProps) => {
+    const { formatPrice } = useFormatPrice();
     const { setLoading } = useLoading();
     const { addToCart } = useCart();
     const [quantity, setQuantity] = useState(1);
@@ -99,9 +101,12 @@ const ModalAddToCart = ({
             // Chỉ lấy id của color và size (không có name)
             const colorId = color_id.id; // Chỉ lấy id của color
             const sizeId = size_id.id; // Chỉ lấy id của size
-
+            const price = product.price_sale ?? product.price;
             // Thực hiện thêm sản phẩm vào giỏ hàng với các tham số cần thiết
-            await addToCart(product, colorId, sizeId, quantity);
+            await addToCart({
+                ...product,
+                price,
+            }, colorId, sizeId, quantity);
 
             // Đóng modal sau khi thêm thành công
             setIsOpenModalAddToCart(false);
@@ -142,14 +147,14 @@ const ModalAddToCart = ({
                                 {product.price_sale !== null ? (
                                     <>
                                         <span className="mr-1 text-xs text-gray-500 line-through hover:text-yellow-500 md:text-sm lg:text-base xl:text-base">
-                                            {product.price} Đ
+                                            {formatPrice(product.price)} Đ
                                         </span>
-                                        <span className="text-sm hover:text-yellow-500 md:text-base lg:text-lg xl:text-xl">
-                                            {product.price_sale} Đ
+                                        <span className="text-sm hover:text-yellow-500 md:text-base lg:text-lg xl:text-xl text-red-500">
+                                            {formatPrice(product.price_sale)} Đ
                                         </span>
                                     </>
                                 ) : (
-                                    <span className="text-sm hover:text-yellow-500 md:text-base lg:text-lg xl:text-xl">
+                                    <span className="text-sm hover:text-yellow-500 md:text-base lg:text-lg xl:text-xl text-red-500">
                                         {product.price} Đ
                                     </span>
                                 )}

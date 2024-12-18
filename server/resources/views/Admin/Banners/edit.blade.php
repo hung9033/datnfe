@@ -20,7 +20,7 @@
                             <form action="{{ route('admins.banner.update',$banner->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('put')
-                                <div class="row">
+                                <div class="row  d-flex flex-column"">
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="simpleinput" class="form-label">Tên banner</label>
@@ -43,11 +43,7 @@
                                         </div>
                                     </div>
                                 </div>
-
-                               
-
-
-                                <button type="submit" class="btn btn-primary justify-content-center">Gửi</button>
+                                <button type="submit" class="btn btn-primary justify-content-center">Cập nhật</button>
 
                             </form>
                         </div>

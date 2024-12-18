@@ -25,7 +25,7 @@ const CostShipping: React.FC<ConfirmationProps> = ({ shippingInfo, shippings, on
 
     return (
         <div>
-            <Typography><strong></strong> {formatPrice(cost)} VNĐ</Typography>
+            <span><strong></strong> {formatPrice(cost)}</span>
         </div>
     );
 };

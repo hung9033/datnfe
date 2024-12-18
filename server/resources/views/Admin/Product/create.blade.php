@@ -11,7 +11,7 @@
             <div class="card">
 
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Input Type</h5>
+                    <h5 class="card-title mb-0">Thêm mới sản phẩm</h5>
                 </div><!-- end card header -->
 
                 <div class="card-body">
@@ -25,7 +25,7 @@
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
                                         <div class="mb-3">
-                                            <label for="simpleinput" class="form-label">Name</label>
+                                            <label for="simpleinput" class="form-label">Tên sản phẩm</label>
                                             <input type="text" id="simpleinput"
                                                 class="form-control  @error('name') is-invalid @enderror" name="name"
                                                 value="{{ old('name') }}" placeholder="name ">
@@ -34,7 +34,7 @@
                                             @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <label for="simpleinput" class="form-label">price</label>
+                                            <label for="simpleinput" class="form-label">Giá</label>
                                             <input type="text" id="simpleinput"
                                                 class="form-control  @error('price') is-invalid @enderror" name="price"
                                                 value="{{ old('price') }}" placeholder="price ">
@@ -43,7 +43,7 @@
                                             @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <label for="simpleinput" class="form-label">image</label>
+                                            <label for="simpleinput" class="form-label">Ảnh </label>
                                             <input type="file" id="simpleinput"
                                                 class="form-control  @error('image') is-invalid @enderror" name="image"
                                                 value="{{ old('title') }}" placeholder="image ">
@@ -52,7 +52,7 @@
                                             @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <label for="simpleinput" class="form-label">description</label>
+                                            <label for="simpleinput" class="form-label">Mô tả ngắn</label>
                                             <input type="text" id="simpleinput"
                                                 class="form-control  @error('description') is-invalid @enderror"
                                                 name="description" value="{{ old('description') }}"
@@ -62,7 +62,7 @@
                                             @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <label for="content" class="form-label">Content</label>
+                                            <label for="content" class="form-label">Thông tin sản phẩm</label>
                                             <textarea class="form-control" id="content" name="content"></textarea>
                                         </div>
                                         <script>
@@ -81,7 +81,7 @@
                                             });
                                         </script>
                                         <div class="mb-3">
-                                            <label for="simpleinput" class="form-label">price_sale</label>
+                                            <label for="simpleinput" class="form-label">Giá sale</label>
                                             <input type="text" id="simpleinput"
                                                 class="form-control  @error('price_sale') is-invalid @enderror"
                                                 name="price_sale" value="{{ old('price_sale') }}"
@@ -91,7 +91,7 @@
                                             @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <label for="simpleinput" class="form-label">Category</label>
+                                            <label for="simpleinput" class="form-label">Danh mục</label>
                                             <select class="form-select" aria-label="Default select example"
                                                 name="sub_category_id">
                                                 @foreach ($categories as $cat)
@@ -135,7 +135,7 @@
                                                     <tr class="">
                                                         <td class="d-flex align-items-center">
                                                             <div class="mb-3 mx-3">
-                                                                <label for="simpleinput" class="form-label">Color</label>
+                                                                <label for="simpleinput" class="form-label">Màu sắc</label>
                                                                 <select class="form-select"
                                                                     aria-label="Default select example"
                                                                     name="products[0][color_id]">
@@ -146,7 +146,7 @@
                                                                 </select>
                                                             </div>
                                                             <div class="mb-3 mx-3">
-                                                                <label for="simpleinput" class="form-label">Size</label>
+                                                                <label for="simpleinput" class="form-label">Kích thước</label>
                                                                 <select class="form-select"
                                                                     aria-label="Default select example"
                                                                     name="products[0][size_id]">
@@ -157,7 +157,7 @@
                                                                 </select>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="simpleinput" class="form-label">Quantity</label>
+                                                                <label for="simpleinput" class="form-label">Số lượng</label>
                                                                 <input type="text" name="products[0][quantity]"
                                                                     class="form-control">
                                                             </div>
@@ -198,7 +198,7 @@
                                 </div>
 
 
-                                <button type="submit" class="btn btn-primary justify-content-center">Gửi</button>
+                                <button type="submit" class="btn btn-primary justify-content-center">Thêm mới</button>
 
                             </form>
                         </div>
@@ -255,46 +255,45 @@
     </script>
 
     <script>
-          var rowCountDem = 1;
-      document.getElementById('add-variant').addEventListener('click', function () {
-
-        var variantTableBody = document.getElementById('variant-table-body');
-        var newVariantRow = document.createElement('tr');
-        newVariantRow.innerHTML = `
+        document.getElementById('add-variant').addEventListener('click', function() {
+            var rowCount = 1;
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
             <td class="d-flex align-items-center">
                 <div class="mb-3 mx-3">
-                    <label for="simpleinput" class="form-label">Color</label>
-                    <select class="form-select" name="products[${rowCountDem}][color_id]">
+                    <label for="simpleinput" class="form-label">Màu sắc</label>
+                    <select class="form-select" aria-label="Default select example" name="products[${rowCount}][color_id]">
                         @foreach ($color as $colors)
                             <option value="{{ $colors->id }}">{{ $colors->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="mb-3 mx-3">
-                    <label for="simpleinput" class="form-label">Size</label>
-                    <select class="form-select" name="products[${rowCountDem}][size_id]">
+                    <label for="simpleinput" class="form-label">Kích thước</label>
+                    <select class="form-select" aria-label="Default select example" name="products[${rowCount}][size_id]">
                         @foreach ($size as $sizes)
                             <option value="{{ $sizes->id }}">{{ $sizes->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="simpleinput" class="form-label">Quantity</label>
-                    <input type="text" class="form-control" name="products[${rowCountDem}][quantity]">
+                    <label for="simpleinput" class="form-label">Số lượng</label>
+                    <input type="text" name="products[${rowCount}][quantity]" class="form-control">
                 </div>
             </td>
             <td>
                 <i class="mdi mdi-delete text-muted fs-18 rounded-2 border p-1 remove-variant" style="cursor: pointer"></i>
             </td>
         `;
-        variantTableBody.appendChild(newVariantRow);
-
-        // Add event listener to the delete button
-        newVariantRow.querySelector('.remove-variant').addEventListener('click', function () {
-            newVariantRow.remove();
+            document.getElementById('variant-table-body').appendChild(newRow);
         });
 
-        rowCountDem++;
-    });
+
+        document.getElementById('variant-table-body').addEventListener('click', function(event) {
+            if (event.target.classList.contains('remove-variant')) {
+
+                event.target.closest('tr').remove();
+            }
+        });
     </script>
 @endsection

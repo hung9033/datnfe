@@ -9,7 +9,7 @@
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
-                <h5 class="card-title align-content-center mb-0">Add SubCategory </h5>
+                <h5 class="card-title align-content-center mb-0">Thêm mới danh mục con </h5>
             </div><!-- end card header -->
 
             <div class="card-body">
@@ -29,7 +29,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="">
-                                    <label for="">Name</label>
+                                    <label for="">Tên danh mục</label>
                                     <input type="text" name="name" class="form-control mt-2 "
                                         placeholder="Vui lòng nhập tên">
                                     @error('name')
@@ -37,14 +37,14 @@
                                     @enderror
                                 </div>
                                 <div class="mt-2">
-                                    <label for="">Image</label>
+                                    <label for="">Ảnh</label>
                                     <input type="file" name="image" class="form-control mt-2 col-6">
                                     @error('image')
                                         <span style="color:red">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mt-2">
-                                    <label for="">Category_id</label>
+                                    <label for="">Danh mục cha</label>
                                     <select name="category_id" id="" class="form-select mt-2">
                                         @foreach ($category_id as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>

@@ -7,8 +7,8 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-2">Tất cả kích thước</h5>
-                    <a  href="{{ route('admins.product_sizes.create') }}" class="btn btn-success ml-auto">Thêm kích thước mới</a>
+                    <h5 class="card-title mb-2">Danh sách kích thước</h5>
+                    <a  href="{{ route('admins.product_sizes.create') }}" class="btn btn-success ml-auto">Thêm mới kích thước </a>
                 </div>
                 @if (session('success'))
                 <div class="alert alert-danger col-3 mt-2 ms-2"  id="success-alert">
@@ -22,7 +22,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Size</th> 
+                                    <th>Kích thước</th> 
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>

@@ -2,9 +2,8 @@ import React from "react";
 import { useProduct } from "../../hook/Product";
 import { Eye, Heart, ShoppingCart } from "lucide-react";
 
-type Props = {};
 
-const ProductView = (props: Props) => {
+const ProductView = () => {
     const { productView } = useProduct();
     const formatPrice = (price) => {
         return new Intl.NumberFormat('vi-VN', {
@@ -15,6 +14,7 @@ const ProductView = (props: Props) => {
     };
     return (
         <div className="container mx-auto p-4 border rounded-lg">
+            <h1 className="text-2xl font-bold text-center mb-6">Sản phẩm đã xem</h1>
             {productView.length > 0 ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {productView.map((product, index) => (
@@ -93,7 +93,7 @@ const ProductView = (props: Props) => {
                 </div>
             ) : (
                 <div className="mt-6 text-center">
-                    <p>Bạn chưa có sản phẩm yêu thích nào.</p>
+                    <p>Không có sản phẩm  nào.</p>
                 </div>
             )}
         </div>

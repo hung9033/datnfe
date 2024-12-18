@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
-    use HasFactory;
-    
+    use HasFactory,SoftDeletes;
+
     const TRANG_THAI_DON_HANG = [
         'cho_xac_nha' => 'Chờ xác nhận',
         'da_xac_nha' => 'Đã xác nhận',

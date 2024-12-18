@@ -22,8 +22,8 @@ export interface Order {
     address: string;
     email: string;
     note: string;
-    commodity_money: string;
-    total_amount: number;
+    commodity_money: number;
+    total_amount: string;
     shipping_id: string;
 
 
