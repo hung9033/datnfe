@@ -207,7 +207,7 @@
                     <img
                     src="http://127.0.0.1:8000/storage/${detail.product_detail.product.image}"
                   name="http://127.0.0.1:8000/storage/${detail.product_detail.product.image}"
-                     alt="">  <strong>${detail.product_detail.product.name}</strong> -
+                     alt="" width="100">  <strong>${detail.product_detail.product.name}</strong> -
                     Số lượng: ${detail.quantity} X  Giá: ${detail.product_detail.product.price.toLocaleString()} VNĐ = ${detail.total_amount.toLocaleString()} VNĐ
 
                 </li>`;

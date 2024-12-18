@@ -49,7 +49,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ productsHot = [] }) =
         }).format(price);
     };
     const settings = {
-        dots: true,
+        // dots: true,
         infinite: productsHot.length > 1,
         speed: 500,
         slidesToShow: productsHot.length > 1 ? 5 : 5, // Luôn hiển thị 4 vị trí dù có 1 sản phẩm

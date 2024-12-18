@@ -147,15 +147,15 @@ const ModalAddToCart = ({
                                 {product.price_sale !== null ? (
                                     <>
                                         <span className="mr-1 text-xs text-gray-500 line-through hover:text-yellow-500 md:text-sm lg:text-base xl:text-base">
-                                            {formatPrice(product.price)} Đ
+                                            {formatPrice(product.price)} 
                                         </span>
                                         <span className="text-sm hover:text-yellow-500 md:text-base lg:text-lg xl:text-xl text-red-500">
-                                            {formatPrice(product.price_sale)} Đ
+                                            {formatPrice(product.price_sale)} 
                                         </span>
                                     </>
                                 ) : (
                                     <span className="text-sm hover:text-yellow-500 md:text-base lg:text-lg xl:text-xl text-red-500">
-                                        {product.price} Đ
+                                        {formatPrice(product.price)} 
                                     </span>
                                 )}
                                 <div className="mt-3 flex items-center text-sm font-medium text-gray-700">

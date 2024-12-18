@@ -55,10 +55,10 @@ class CartController extends Controller
             if ($stock == 0) {
                 return response()->json(['error' => 'Sản phẩm đã hết hàng']);
             }
+            $sluong=$quantity-$stock;
             if ($quantity > $stock) {
-                return response()->json(['error' => 'Số lượng vượt quá giới hạn']);
+                return response()->json(['error' => "Số lượng vượt quá giới hạn {$sluong} sản phẩm"]);
             }
-
             $productDetail_id = $productDetail->id;
             $cart = Cart::firstOrCreate(['user_id' => $user_id]);
             $cartDetail = CartDetail::where('cart_id', $cart->id)
@@ -159,8 +159,9 @@ class CartController extends Controller
         if(!$productDetail){
             return response()->json(['error' => 'Không có sản phẩm ',], 200);
         }
+        $sluong = $productDetail->quantity - $request->quantity;
         if($productDetail->quantity < $request->quantity){
-            return response()->json(['error' => 'không đủ số lượng : '.$productDetail->product->name],200);
+            return response()->json(['error' => 'Không đủ số lượng : '.$productDetail->product->name . $sluong . 'sản phẩm'],200);
         }
         if($request->quantity=='0'){
             return response()->json(['error' => 'Số lượng sản phẩm không được về 0 : '.$productDetail->product->name],200);

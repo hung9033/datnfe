@@ -58,7 +58,7 @@ const ModalOrderDetail = ({ openDetailOrder, closeOderDetail, OrderIdDetail }: M
             console.error("Error fetching order details:", error);
         }
     };
-    console.log(infor);
+
     useEffect(() => {
         if (OrderIdDetail) {
             getOrderDetailId();

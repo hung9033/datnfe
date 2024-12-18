@@ -18,11 +18,12 @@ interface OrderItem {
     quantity: number;
     code_order: string;
     total_amount: string;
+    vn_payId: number;
 }
 
 const Order: React.FC = () => {
     const { myOrder, setMyOrder, getMyOrder, searchOrder, search } = useOder();
-    console.log(search);
+    console.log(myOrder);
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalComment, setModalComment] = useState(false);
@@ -104,7 +105,7 @@ const Order: React.FC = () => {
         setModalVisible(false);
     };
 
-    const getStatusButton = (status: string, orderId: string) => {
+    const getStatusButton = (status: string, orderId: string, vn_payId: number) => {
         if (status === "Đang vận chuyển") {
             return (
                 <button
@@ -114,21 +115,22 @@ const Order: React.FC = () => {
                     Đã nhận hàng
                 </button>
             );
-        } else if (status === "Chờ xác nhận" || status === "Đã xác nhận") {
+        } else if (status === "Chờ xác nhận" || status === "Đã xác nhận" && vn_payId != null && vn_payId !== '') {
             return (
                 <button
-                    className="px-4 py-2 bg-red-500 text-white  rounded"
-                    onClick={() => openCancelModal(orderId)}
+                    className={`px-4 py-2 rounded ${vn_payId === null || vn_payId === ""
+                            ? "bg-red-500 text-white"
+                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        }`}
+                    onClick={() => (vn_payId === null || vn_payId === "") && openCancelModal(orderId)}
+                    disabled={vn_payId !== null && vn_payId !== ""}
                 >
                     Hủy đơn
                 </button>
+
             );
-            // } else if (status === "Đã nhận hàng") {
-            //     return (
-            //         <button className="px-4 py-2 bg-yellow-400 text-black  rounded hover:bg-yellow-300 ">
-            //             Mua lại
-            //         </button>
-            //     );
+        } else {
+            return null; // Không hiển thị nút nếu không thỏa mãn điều kiện
         }
     };
 
@@ -165,7 +167,7 @@ const Order: React.FC = () => {
             <div className="overflow-hidden">
                 <div className=" mx-auto  relative md:h-[550px]  h-[750px] overflow-y-scroll">
                     {/* Search Bar */}
-                    <div className="mb-4">
+                    {/* <div className="mb-4">
                         <input
                             onChange={(e) => setValueSearch(e.target.value)}
                             value={valueSearch}
@@ -174,7 +176,7 @@ const Order: React.FC = () => {
                             className=" text-[15px] w-40 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         <button onClick={() => handleSearch()} >Gửi</button>
-                    </div>
+                    </div> */}
                     {myOrder.length === 0 ? (
                         <div className="text-center py-10 text-gray-500">
                             <p>Không có đơn hàng nào</p>
@@ -232,7 +234,8 @@ const Order: React.FC = () => {
                                         >
                                             Chi tiết
                                         </button>
-                                        {getStatusButton(groupedOrders[Number(id)][0].orderStatus, id)}
+                                        {getStatusButton(groupedOrders[Number(id)][0].orderStatus, id, groupedOrders[Number(id)][0].vn_payId)}
+
                                     </div>
                                 </div>
                             </div>

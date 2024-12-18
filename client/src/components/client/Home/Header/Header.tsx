@@ -111,7 +111,7 @@ const Header: React.FC<HeaderProps> = ({ isMobile }) => {
                 <img src={yourImage} alt="Logo" className="h-auto w-full" />
               </div>
               <h1 className="hidden text-[24px] font-bold xl:block">
-                Modern Men
+                odern Men
               </h1>
             </a>
           </div>

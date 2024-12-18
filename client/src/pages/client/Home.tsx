@@ -186,7 +186,7 @@ const Home = () => {
                 </div>
                 <div className="flex justify-center gap-1 lg:gap-4 bg-white py-2 lg:p-4">
                     {/* Banner 1 */}
-                    <div className="flex items-center overflow-hidden rounded-md border border-black">
+                    <div className="flex items-center overflow-hidden rounded-md border border-black px-2">
                         <div className="flex items-center justify-center ">
                             <div className=" text-sm lg:text-3xl font-bold text-red-500">%</div>
                         </div>
@@ -197,7 +197,7 @@ const Home = () => {
                     </div>
 
                     {/* Banner 2 */}
-                    <div className="flex items-center overflow-hidden rounded-md border border-black " >
+                    <div className="flex items-center overflow-hidden rounded-md border border-black px-2" >
                         <div className="flex items-center justify-center ">
                             <div className="text-sm lg:text-lg font-bold text-red-500">FREE</div>
                         </div>

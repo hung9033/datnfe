@@ -51,7 +51,8 @@ class ApiOrderController extends Controller
                 'note' => $donHang->note,
                 'total_amount' => $donHang->total_amount,
                 'id' => $donHang->id,
-                'orderStatus' => $trangThaiDonHang[$donHang->order_status]
+                'orderStatus' => $trangThaiDonHang[$donHang->order_status],
+
             ];
         })->sortByDesc('id')->values(); // Sort by ID in descending order
 
@@ -70,6 +71,7 @@ class ApiOrderController extends Controller
                     'code_order' => $donHang->code_order,
                     'id_product' => $detail->productDetail->product->id,
                     'total_amount' => $donHang->total_amount,
+                    'vn_payId' =>$donHang->vnpayy_id
                 ];
             });
         })->sortByDesc('id')->values(); // Sort by ID in descending order

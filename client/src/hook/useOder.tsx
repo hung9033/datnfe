@@ -29,7 +29,6 @@ export const useOder = () => {
         try {
             setLoading(true);
             const resposive = await axios.get("/api/donhangs/create");
-            console.log('sd', resposive.data);
             serOders(resposive.data.cart);
         } catch (error) {
             console.log(error);
